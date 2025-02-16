@@ -26,7 +26,7 @@ public class MainFrontEnd {
         logger.debug("Load Network config file : {}", networkConfig.toString());
 
         final StudentService studentService = new StudentService(networkConfig);
-        studentService.insertStudents();
+        //studentService.insertStudents();
         Students students = studentService.selectStudents();
         final AsciiTable asciiTable = new AsciiTable();
         for (final Student student : students.getStudents()) {
