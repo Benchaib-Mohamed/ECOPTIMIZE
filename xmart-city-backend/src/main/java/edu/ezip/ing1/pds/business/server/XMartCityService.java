@@ -63,7 +63,16 @@ public class XMartCityService {
     }
 
     private Response InsertStudent(final Request request, final Connection connection) throws SQLException, IOException {
-        return null; //  ACODER
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Student student = objectMapper.readValue(request.getRequestBody(), Student.class); //On instancie un student grace aux infos sous format JSON de notre étudiant
+        final PreparedStatement stmnt = connection.prepareStatement(Queries.INSERT_STUDENT.query);// on utilise un prepared statement car on a des requetes avec parameteres
+        stmnt.setString(1, student.getName()); // premier arg = prenom  
+        stmnt.setString(2, student.getFirstname());// 2eme arg = nom
+        stmnt.setString(3, student.getGroup());// troisème arg = groupe
+        stmnt.executeUpdate(); 
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(student));
+
+         //  ACODER
     }
 
 
