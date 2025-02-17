@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>edu.ezip.ing1.pds</groupId>
-        <artifactId>smart-city-by-ezip</artifactId>
+        <artifactId>ecoptimize</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>edu.ezip.ing1.pds.client</groupId>
-    <artifactId>xmart-frontend</artifactId>
+    <artifactId>ecoptimize-frontend</artifactId>
     <packaging>jar</packaging>
 
     <build>
@@ -60,13 +60,13 @@
 
         <dependency>
             <groupId>edu.ezip.ing1.pds.commons</groupId>
-            <artifactId>xmart-city-commons</artifactId>
+            <artifactId>ecoptimize-commons</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>edu.ezip.ing1.pds</groupId>
-            <artifactId>xmart-city-business-dto</artifactId>
+            <artifactId>ecoptimize-business-dto</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -78,7 +78,7 @@
 
         <dependency>
             <groupId>edu.ezip.ing1.pds.client.commons</groupId>
-            <artifactId>xmart-city-client-commons</artifactId>
+            <artifactId>ecoptimize-client-commons</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -89,7 +89,7 @@
         </dependency>
         <dependency>
             <groupId>edu.ezip.ing1.pds.client.commons</groupId>
-            <artifactId>xmart-city-client-commons</artifactId>
+            <artifactId>ecoptimize-client-commons</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

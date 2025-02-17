@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>smart-city-by-ezip</artifactId>
+        <artifactId>ecoptimize</artifactId>
         <groupId>edu.ezip.ing1.pds</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>xmart-city-business-dto</artifactId>
+    <artifactId>ecoptimize-business-dto</artifactId>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

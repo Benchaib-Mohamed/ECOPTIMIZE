@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>edu.ezip.ing1.pds</groupId>
-    <artifactId>smart-city-by-ezip</artifactId>
+    <artifactId>ecoptimize</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>logging-utils</module>
         <module>rdbms-connection-pool</module>
-        <module>xmart-city-business-dto</module>
-        <module>xmart-city-client-commons</module>
-        <module>xmart-city-commons</module>
-        <module>xmart-city-backend</module>
-        <module>xmart-frontend</module>
+        <module>ecoptimize-business-dto</module>
+        <module>ecoptimize-client-commons</module>
+        <module>ecoptimize-commons</module>
+        <module>ecoptimize-backend</module>
+        <module>ecoptimize-frontend</module>
     </modules>
 
 
