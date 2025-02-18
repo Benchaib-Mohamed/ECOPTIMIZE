@@ -1,0 +1,28 @@
+
+
+produits:
+  - idP: 2
+    nom: "BN"
+    poids: 15
+    ig: 70
+    bio: false
+    origine: "France"
+    idC: 1
+    idA: 1
+  - idP: 3
+    nom: "prince"
+    poids: 28
+    ig: 65
+    bio: false
+    origine: "France"
+    idC: 1
+    idA: 1
+  - idP: 4
+    nom: "pims"
+    poids: 35
+    ig: 75
+    bio: true
+    origine: "France"
+    idC: 1
+    idA: 1
+

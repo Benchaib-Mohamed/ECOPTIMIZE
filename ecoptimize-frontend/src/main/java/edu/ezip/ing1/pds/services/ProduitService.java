@@ -3,8 +3,8 @@ package edu.ezip.ing1.pds.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
-import edu.ezip.ing1.pds.business.dto.Student;
-import edu.ezip.ing1.pds.business.dto.Students;
+import edu.ezip.ing1.pds.business.dto.Produit;
+import edu.ezip.ing1.pds.business.dto.Produits;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
@@ -20,26 +20,26 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.UUID;
 
-public class StudentService {
+public class ProduitService {
     private final static String LoggingLabel = "FrontEnd - StudentService";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
-    private final static String studentsToBeInserted = "students-to-be-inserted.yaml";
+    private final static String produitsToBeInserted = "produits-to-be-inserted.yaml";
 
-    final String insertRequestOrder = "INSERT_STUDENT";
-    final String selectRequestOrder = "SELECT_ALL_STUDENTS";
+    final String insertRequestOrder = "INSERT_PRODUIT";
+    final String selectRequestOrder = "SELECT_ALL_PRODUITS";
 
     private final NetworkConfig networkConfig;
 
-    public StudentService(NetworkConfig networkConfig) {
+    public ProduitService(NetworkConfig networkConfig) {
         this.networkConfig = networkConfig;
     }
 
-    public void insertStudents() throws InterruptedException, IOException {
+    public void insertProduits() throws InterruptedException, IOException {
         final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
-        final Students guys = ConfigLoader.loadConfig(Students.class, studentsToBeInserted);
+        final Produits guys = ConfigLoader.loadConfig(Produits.class, produitsToBeInserted);
 
         int birthdate = 0;
-        for(final Student guy : guys.getStudents()) {
+        for(final Produit guy : guys.getProduits()) {
             final ObjectMapper objectMapper = new ObjectMapper();
             final String jsonifiedGuy = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(guy);
             logger.trace("Student with its JSON face : {}", jsonifiedGuy);
@@ -60,15 +60,16 @@ public class StudentService {
         while (!clientRequests.isEmpty()) {
             final ClientRequest clientRequest = clientRequests.pop();
             clientRequest.join();
-            final Student guy = (Student)clientRequest.getInfo();
-            logger.debug("Thread {} complete : {} {} {} --> {}",
+            final Produit prod = (Produit)clientRequest.getInfo();
+            logger.debug("Thread {} complete : {} {} {} {} {} {} {} {}  --> {}",
                     clientRequest.getThreadName(),
-                    guy.getFirstname(), guy.getName(), guy.getGroup(),
+                    //prod.getFirstname(), prod.getName(), prod.getGroup(),
+                    prod.getIdP(), prod.getNom(), prod.getPoids(), prod.getIg(), prod.getBio(), prod.getOrigine() ,prod.getIdC(), prod.getIdA(),
                     clientRequest.getResult());
         }
     }
 
-    public Students selectStudents() throws InterruptedException, IOException {
+    public Produits selectProduits() throws InterruptedException, IOException {
         int birthdate = 0;
         final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -81,14 +82,14 @@ public class StudentService {
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
         final SelectAllStudentsClientRequest clientRequest = new SelectAllStudentsClientRequest(
                 networkConfig,
-                birthdate++, request, null, requestBytes); //PTETRE ICI §§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+                birthdate++, request, null, requestBytes); 
         clientRequests.push(clientRequest);
 
         if(!clientRequests.isEmpty()) {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
-            return (Students) joinedClientRequest.getResult();
+            return (Produits) joinedClientRequest.getResult();
         }
         else {
             logger.error("No students found");
