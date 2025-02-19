@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.swing.*;
 
 public class EcoptimizeService {
 
@@ -23,7 +24,8 @@ public class EcoptimizeService {
 
     private enum Queries {
         SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t"),
-        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
+        SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t WHERE t.Nom = ? ");
         private final String query;
 
         private Queries(final String query) {
@@ -55,6 +57,9 @@ public class EcoptimizeService {
             case INSERT_PRODUIT:
                 response = InsertProduit(request, connection);
                 break;
+            case SELECT_PRODUIT_NOM:
+                //String s= JOptionPane.showInputDialog("Veuillez inserer le produit à chercher");
+                response = SelectProduitNom(request, connection,"pims");
             default:
                 break;
         }
@@ -66,14 +71,10 @@ public class EcoptimizeService {
         final ObjectMapper objectMapper = new ObjectMapper();
         final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class); // On instancie un produit grâce aux infos sous format JSON
     
-        // Log avant l'insertion pour vérifier les valeurs
-        logger.debug("Insertion produit : idP={}, nom={}, poids={}, ig={}, bio={}, origine={}, idC={}, idA={}", 
-            produit.getIdP(), produit.getNom(), produit.getPoids(), produit.getIg(), 
-            produit.getBio(), produit.getOrigine(), produit.getIdC(), produit.getIdA());
        
         final PreparedStatement stmnt = connection.prepareStatement(Queries.INSERT_PRODUIT.query);
        
-        // Assurez-vous que les types correspondent correctement
+        
         stmnt.setInt(1, produit.getIdP());  
         stmnt.setString(2, produit.getNom()); 
         stmnt.setInt(3, produit.getPoids());  
@@ -82,8 +83,8 @@ public class EcoptimizeService {
         stmnt.setString(6, produit.getOrigine());
         stmnt.setInt(7, produit.getIdC()); 
         stmnt.setInt(8, produit.getIdA());  
-      
-        // Retour de la réponse après insertion
+        stmnt.executeUpdate();  
+        
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
     }
     
@@ -111,6 +112,28 @@ public class EcoptimizeService {
         }
     
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produits));
+    }
+
+    private Response SelectProduitNom(final Request request, final Connection connection, String s) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_PRODUIT_NOM.query);
+        stmt.setString(1,s);
+        final ResultSet res = stmt.executeQuery();
+        res.next();
+        Produit produit = new Produit();
+       
+            // Récupération des valeurs 
+            produit.setIdP(res.getInt(1));  
+            produit.setNom(res.getString(2));
+            produit.setPoids(res.getInt(3));  
+            produit.setIg(res.getInt(4));  
+            produit.setBio(res.getBoolean(5));  
+            produit.setOrigine(res.getString(6));
+            produit.setIdC(res.getInt(7));  
+            produit.setIdA(res.getInt(8)); 
+
+    
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
     }
 }    
     

@@ -28,16 +28,22 @@ public class MainFrontEnd {
         logger.debug("Load Network config file : {}", networkConfig.toString());
 
         final ProduitService produitService = new ProduitService(networkConfig);
-        produitService.insertProduits();
-        Produits produits = produitService.selectProduits();
+        //produitService.insertProduits();
+        //Produits produits = produitService.selectProduits();
         final AsciiTable asciiTable = new AsciiTable();
-        for (final Produit produit : produits.getProduits()) { 
+        /*for (final Produit produit : produits.getProduits()) { 
             asciiTable.addRule();
             asciiTable.addRow(produit.getIdP(), produit.getNom(), produit.getPoids(), produit.getIg(), produit.getBio(), produit.getOrigine(), produit.getIdC(), produit.getIdA());
         }
         asciiTable.addRule();
         logger.debug("\n{}\n", asciiTable.render());
-        //new FenetrePrincipale();
+        */
+        Produit p=produitService.selectProduitNom();
+        asciiTable.addRule();
+        asciiTable.addRow(p.getIdP(), p.getNom(), p.getPoids(), p.getIg(), p.getBio(), p.getOrigine(), p.getIdC(), p.getIdA());
+        asciiTable.addRule();
+        logger.debug("\n{}\n", asciiTable.render());
+        new FenetrePrincipale();
     }
 }
 

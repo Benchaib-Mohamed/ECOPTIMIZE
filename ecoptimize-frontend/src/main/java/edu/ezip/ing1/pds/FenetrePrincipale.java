@@ -3,7 +3,7 @@ package edu.ezip.ing1.pds;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +12,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     JButton boutonAlt = new JButton("Rechercher une alternative à un produit");
     JButton boutonStat = new JButton("Consulter les statistiques relatives à un produit");
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
+    JPanel p= new JPanel();
     public FenetrePrincipale(){
         this.setTitle("Ecoptimize");
         this.setLocationRelativeTo(null);
@@ -19,6 +20,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         this.setLayout(new BorderLayout());
         boutonAlt.addActionListener(this);
         boutonStat.addActionListener(this);
+        //this.getContentPane().setBackground(Color.BLACK);
         this.getContentPane().add(BorderLayout.NORTH, message);
         this.getContentPane().add(BorderLayout.WEST, boutonAlt);
         this.getContentPane().add(BorderLayout.EAST, boutonStat);

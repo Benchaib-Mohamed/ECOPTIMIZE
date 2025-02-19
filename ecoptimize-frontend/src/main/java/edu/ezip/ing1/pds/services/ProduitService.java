@@ -11,6 +11,7 @@ import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InsertStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
+import edu.ezip.ing1.pds.requests.SelectStudentNomClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -27,6 +28,7 @@ public class ProduitService {
 
     final String insertRequestOrder = "INSERT_PRODUIT";
     final String selectRequestOrder = "SELECT_ALL_PRODUITS";
+    final String selectNomRequestOrder = "SELECT_PRODUIT_NOM";
 
     private final NetworkConfig networkConfig;
 
@@ -97,4 +99,33 @@ public class ProduitService {
         }
     }
 
+
+
+public Produit selectProduitNom() throws InterruptedException, IOException {
+    int birthdate = 0;
+    final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final String requestId = UUID.randomUUID().toString();
+    final Request request = new Request();
+    request.setRequestId(requestId);
+    request.setRequestOrder(selectNomRequestOrder);
+    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+    LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+    final SelectStudentNomClientRequest clientRequest = new SelectStudentNomClientRequest(
+            networkConfig,
+            birthdate++, request, null, requestBytes); 
+    clientRequests.push(clientRequest);
+
+    if(!clientRequests.isEmpty()) {
+        final ClientRequest joinedClientRequest = clientRequests.pop();
+        joinedClientRequest.join();
+        logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+        return (Produit) joinedClientRequest.getResult();
+    }
+    else {
+        logger.error("No students found");
+        return null;
+    }
+}
 }
