@@ -101,14 +101,15 @@ public class ProduitService {
 
 
 
-public Produit selectProduitNom() throws InterruptedException, IOException {
+public Produit selectProduitNom(String nom) throws InterruptedException, IOException {
     int birthdate = 0;
     final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
     final ObjectMapper objectMapper = new ObjectMapper();
     final String requestId = UUID.randomUUID().toString();
     final Request request = new Request();
+    request.setNom(nom);
     request.setRequestId(requestId);
-    request.setRequestOrder(selectNomRequestOrder);
+    request.setRequestOrder(selectNomRequestOrder);  // est récupéré dans EcoptimizeService.dispatch
     objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
     final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
     LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);

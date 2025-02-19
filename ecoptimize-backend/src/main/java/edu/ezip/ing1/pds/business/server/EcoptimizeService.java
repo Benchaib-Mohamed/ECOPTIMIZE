@@ -25,7 +25,7 @@ public class EcoptimizeService {
     private enum Queries {
         SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t"),
         INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
-        SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t WHERE t.Nom = ? ");
+        SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t WHERE t.Nom = ?");
         private final String query;
 
         private Queries(final String query) {
@@ -48,8 +48,9 @@ public class EcoptimizeService {
     public final Response dispatch(final Request request, final Connection connection)
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
+        String s=request.getNom();
 
-        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());
+        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());//request.get... =ce qui est recu de ProduitService
         switch(queryEnum) {
             case SELECT_ALL_PRODUITS:
                 response = SelectAllProduits(request, connection);
@@ -58,8 +59,8 @@ public class EcoptimizeService {
                 response = InsertProduit(request, connection);
                 break;
             case SELECT_PRODUIT_NOM:
-                //String s= JOptionPane.showInputDialog("Veuillez inserer le produit à chercher");
-                response = SelectProduitNom(request, connection,"pims");
+            
+                response = SelectProduitNom(request, connection,s);
             default:
                 break;
         }
@@ -120,6 +121,7 @@ public class EcoptimizeService {
         stmt.setString(1,s);
         final ResultSet res = stmt.executeQuery();
         res.next();
+
         Produit produit = new Produit();
        
             // Récupération des valeurs 

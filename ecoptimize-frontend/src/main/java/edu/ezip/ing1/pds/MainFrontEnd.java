@@ -38,12 +38,13 @@ public class MainFrontEnd {
         asciiTable.addRule();
         logger.debug("\n{}\n", asciiTable.render());
         */
-        Produit p=produitService.selectProduitNom();
+        String s= "Granola";
+        Produit p=produitService.selectProduitNom(s);
         asciiTable.addRule();
         asciiTable.addRow(p.getIdP(), p.getNom(), p.getPoids(), p.getIg(), p.getBio(), p.getOrigine(), p.getIdC(), p.getIdA());
         asciiTable.addRule();
         logger.debug("\n{}\n", asciiTable.render());
-        new FenetrePrincipale();
+        //new FenetrePrincipale();
     }
 }
 

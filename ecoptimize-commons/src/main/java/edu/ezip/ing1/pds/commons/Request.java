@@ -15,6 +15,18 @@ public class Request {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String requestBody;
 
+    private String nom;
+
+    
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     @JsonProperty("request_order")
     public void setRequestOrder(String requestOrder) {
         this.requestOrder = requestOrder;

@@ -11,10 +11,10 @@ import java.io.IOException;
 public class SelectStudentNomClientRequest extends ClientRequest<Object, Produit> {
 
     public SelectStudentNomClientRequest(
-            NetworkConfig networkConfig, int myBirthDate, Request request, Object info, byte[] bytes)
-            throws IOException {
-        super(networkConfig, myBirthDate, request, info, bytes);
-    }
+            NetworkConfig networkConfig, int myBirthDate, Request request, Object info, byte[] bytes) throws IOException {
+                
+                super(networkConfig, myBirthDate, request, info, bytes);
+            }
 
     @Override
     public Produit readResult(String body) throws IOException {
