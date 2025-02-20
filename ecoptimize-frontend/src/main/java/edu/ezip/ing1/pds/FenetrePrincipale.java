@@ -48,7 +48,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
                     new FenetreAlt();
                 }
                 if(e.getSource() == boutonStat){
-                    //new FenetreStat();
+                    new FenetreStat();
                 }
                 if(e.getSource() == boutonInser){
                     new FenetreInser();

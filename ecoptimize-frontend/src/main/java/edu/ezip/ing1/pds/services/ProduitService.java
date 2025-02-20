@@ -12,6 +12,8 @@ import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InsertStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectStudentNomClientRequest;
+import edu.ezip.ing1.pds.requests.UpadateProduitClientRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -31,6 +33,7 @@ public class ProduitService {
     final String insertRequestOrder = "INSERT_PRODUIT";
     final String selectRequestOrder = "SELECT_ALL_PRODUITS";
     final String selectNomRequestOrder = "SELECT_PRODUIT_NOM";
+    final String updateRequestOrder="UPDATE_PRODUIT_NBRECHERCHE";
 
     private final NetworkConfig networkConfig;
 
@@ -143,33 +146,52 @@ public class ProduitService {
     }
 
 
-
-public Produit selectProduitNom(String nom) throws InterruptedException, IOException {
-    int birthdate = 0;
-    final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
-    final ObjectMapper objectMapper = new ObjectMapper();
-    final String requestId = UUID.randomUUID().toString();
-    final Request request = new Request();
-    request.setNom(nom);
-    request.setRequestId(requestId);
-    request.setRequestOrder(selectNomRequestOrder);  // est récupéré dans EcoptimizeService.dispatch
-    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-    final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
-    LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
-    final SelectStudentNomClientRequest clientRequest = new SelectStudentNomClientRequest(
-            networkConfig,
-            birthdate++, request, null, requestBytes); 
-    clientRequests.push(clientRequest);
-
-    if(!clientRequests.isEmpty()) {
-        final ClientRequest joinedClientRequest = clientRequests.pop();
-        joinedClientRequest.join();
-        logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
-        return (Produit) joinedClientRequest.getResult();
+    public Produit selectProduitNom(String nom) throws InterruptedException, IOException {
+        int birthdate = 0;
+        final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String requestId = UUID.randomUUID().toString();
+        final Request request = new Request();
+        request.setNom(nom);
+        request.setRequestId(requestId);
+        request.setRequestOrder(selectNomRequestOrder);  // est récupéré dans EcoptimizeService.dispatch
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+        final SelectStudentNomClientRequest clientRequest = new SelectStudentNomClientRequest(
+                networkConfig,
+                birthdate++, request, null, requestBytes); 
+        clientRequests.push(clientRequest);
+    
+        if(!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+            Produit P= (Produit) joinedClientRequest.getResult();
+            
+            int NbrechercheIncrement=P.getNbRecherche()+1;
+            P.setNbRecherche(NbrechercheIncrement);
+            final String updateRequestId = UUID.randomUUID().toString();
+            Request request2=new Request();
+            request2.setNom(nom);
+            request2.setRequestId(updateRequestId);
+            request2.setRequestOrder(updateRequestOrder);
+            objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+            final byte []  requestByte = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request2);
+            LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestByte);
+            UpadateProduitClientRequest updateRequest=new UpadateProduitClientRequest(networkConfig, birthdate, request2, null, requestByte);
+            return P;
+    
+            
+    
+            
+        }
+        else {
+            logger.error("No students found");
+            return null;
+        }
     }
-    else {
-        logger.error("No students found");
-        return null;
     }
-}
-}
+    
+
+
