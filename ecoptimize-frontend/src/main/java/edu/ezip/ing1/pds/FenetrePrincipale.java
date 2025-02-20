@@ -9,20 +9,36 @@ import java.io.IOException;
 public class FenetrePrincipale extends JFrame implements ActionListener {
     JButton boutonAlt = new JButton("Rechercher une alternative à un produit");
     JButton boutonStat = new JButton("Consulter les statistiques relatives à un produit");
+    JButton boutonInser = new JButton("Inserer un produit dans la base de données");
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
-    JPanel p= new JPanel();
+    JPanel titre= new JPanel();
+    JPanel reste = new JPanel();
     public FenetrePrincipale(){
+
         this.setTitle("Ecoptimize");
-        this.setLocationRelativeTo(null);
-        this.setSize(600,600);
+        
+        this.setSize(1280,720);
         this.setLayout(new BorderLayout());
+        message.setPreferredSize(new Dimension(50,150));
         boutonAlt.addActionListener(this);
         boutonStat.addActionListener(this);
+        boutonInser.addActionListener(this);
         //this.getContentPane().setBackground(Color.BLACK);
-        this.getContentPane().add(BorderLayout.NORTH, message);
-        this.getContentPane().add(BorderLayout.WEST, boutonAlt);
-        this.getContentPane().add(BorderLayout.EAST, boutonStat);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.getContentPane().add(BorderLayout.NORTH, titre);
+        titre.setLayout(new BorderLayout());
+        reste.setLayout(new FlowLayout());
+        message.setHorizontalAlignment(SwingConstants.CENTER);
+        message.setFont(new Font("Arial", Font.BOLD,30));
+        titre.add(message);
+        boutonAlt.setPreferredSize(new Dimension(350,350));
+        boutonStat.setPreferredSize(new Dimension(350,350));
+        boutonInser.setPreferredSize(new Dimension(350,350));
+        reste.add(boutonAlt);
+        reste.add(boutonStat);
+        reste.add(boutonInser);
+        this.getContentPane().add(BorderLayout.CENTER, reste);
+        
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
     public void actionPerformed(ActionEvent e){
@@ -32,7 +48,10 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
                     new FenetreAlt();
                 }
                 if(e.getSource() == boutonStat){
-                    //new FenetreAlt();
+                    //new FenetreStat();
+                }
+                if(e.getSource() == boutonInser){
+                    new FenetreInser();
                 }
                 
             }catch(IOException ex){

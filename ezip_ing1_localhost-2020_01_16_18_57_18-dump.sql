@@ -43,6 +43,7 @@ CREATE TABLE produits(
    Origine VARCHAR(50),
    IdC INT,
    IdA INT,
+   NbRecherche INT DEFAULT 0,
    PRIMARY KEY(IdP),
    FOREIGN KEY(IdC) REFERENCES catégorie(IdC),
    FOREIGN KEY(IdA) REFERENCES aleternatives(IdA)
@@ -52,8 +53,10 @@ CREATE TABLE stat(
    IdP INT,
    IdB INT,
    PRIMARY KEY(IdP, IdB),
-   FOREIGN KEY(IdP) REFERENCES produit(IdP),
+   FOREIGN KEY(IdP) REFERENCES produits(IdP),
    FOREIGN KEY(IdB) REFERENCES borne(IdB)
 );
 
-INSERT INTO produits (IdP, Nom, Poids, IG, Bio, Origine) VALUES (1,"Granola", 15, 70, FALSE, "France");
+
+
+

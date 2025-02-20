@@ -23,7 +23,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class FenetreAlt extends JFrame implements ActionListener {
+public class FenetreInser extends JFrame implements ActionListener {
     private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
@@ -33,30 +33,21 @@ public class FenetreAlt extends JFrame implements ActionListener {
     final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
     final ProduitService produitService = new ProduitService(networkConfig);
 
-    JLabel l = new JLabel("Veuillez entrer le nom du produit à remplacer");
-    JTextField entrerProd = new JTextField();
-    JLabel carac1 = new JLabel("Ecoptimize vous recommande :");
-    JLabel carac2=new JLabel();
-    JButton rech= new JButton("Rechercher");
-    JPanel pNord= new JPanel();
-    JPanel pSud = new JPanel();
+    
+    JButton inser = new JButton("Cliquez pour commencer l'insertion d'un produit");
 
-    public FenetreAlt() throws IOException, InterruptedException{
+    public FenetreInser() throws IOException, InterruptedException{
 
         
-        this.setTitle("Recherche d'alternatives");
+        this.setTitle("Insertion de produit");
         this.setSize(600,600);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        this.setLayout(new BorderLayout());
-        this.getContentPane().add(BorderLayout.SOUTH,pSud);
-        this.getContentPane().add(pNord);
-        pNord.setLayout(new GridLayout(3,2));
-        pSud.setLayout(new BorderLayout());
-        rech.addActionListener(this);
-        pNord.add(l);  
-        pNord.add(entrerProd);
-        pNord.add(rech);
+        
+        
+        inser.addActionListener(this);
+        
+        this.getContentPane().add(inser);
         this.setVisible(true);
 
         
@@ -65,16 +56,10 @@ public class FenetreAlt extends JFrame implements ActionListener {
         
         try {
             try {
-                String s= entrerProd.getText();
-                Produit p=produitService.selectProduitNom(s);
-                carac2.setPreferredSize(new Dimension(70,150));
-                carac1.setPreferredSize(new Dimension(35,75));
-                carac2.setText(p.getNom()+" , avec "+p.getPoids()+ "g par portion, un IG de "+p.getIg()+" ."+ " BIO : "+p.getBio() + ", origine : "+ p.getOrigine());
-                pSud.add(BorderLayout.NORTH,carac1);
-                pSud.add(carac2);
-
                 
-                this.setVisible(true);
+                    produitService.insertProduits();
+                    JOptionPane.showMessageDialog(this, "Le produit à bien était inserer");
+                
             } catch (IOException io) {
                 io.printStackTrace();
             } 
@@ -83,4 +68,4 @@ public class FenetreAlt extends JFrame implements ActionListener {
         }
         
     }
-}
+}    

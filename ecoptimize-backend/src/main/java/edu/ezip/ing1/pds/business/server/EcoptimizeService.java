@@ -23,9 +23,11 @@ public class EcoptimizeService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t"),
-        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"),
-        SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA FROM produits t WHERE t.Nom = ?");
+        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t"),
+        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+        //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE t.Nom = ?");
+        SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA");
+
         private final String query;
 
         private Queries(final String query) {
@@ -70,7 +72,7 @@ public class EcoptimizeService {
 
     private Response InsertProduit(final Request request, final Connection connection) throws SQLException, IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class); // On instancie un produit grâce aux infos sous format JSON
+        final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class); // On instancie un produit grâce aux infos de la requet sous format JSON
     
        
         final PreparedStatement stmnt = connection.prepareStatement(Queries.INSERT_PRODUIT.query);
@@ -84,6 +86,7 @@ public class EcoptimizeService {
         stmnt.setString(6, produit.getOrigine());
         stmnt.setInt(7, produit.getIdC()); 
         stmnt.setInt(8, produit.getIdA());  
+        stmnt.setInt(9, produit.getNbRecherche());
         stmnt.executeUpdate();  
         
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
@@ -108,6 +111,7 @@ public class EcoptimizeService {
             produit.setOrigine(res.getString(6));
             produit.setIdC(res.getInt(7));  
             produit.setIdA(res.getInt(8)); 
+            produit.setNbRecherche(res.getInt(9));
     
             produits.add(produit);
         }
@@ -133,6 +137,7 @@ public class EcoptimizeService {
             produit.setOrigine(res.getString(6));
             produit.setIdC(res.getInt(7));  
             produit.setIdA(res.getInt(8)); 
+            produit.setNbRecherche(res.getInt(9));
 
     
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));

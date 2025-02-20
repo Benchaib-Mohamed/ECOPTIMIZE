@@ -6,9 +6,10 @@ produits:
     poids: 15
     ig: 70
     bio: false
-    origine: "France"
+    origine: "Etats Unis"
     idC: 1
     idA: 1
+    nbRecherche: 0
   - idP: 3
     nom: "prince"
     poids: 28
@@ -17,6 +18,7 @@ produits:
     origine: "France"
     idC: 1
     idA: 1
+    nbRecherche: 0
   - idP: 4
     nom: "pims"
     poids: 35
@@ -25,4 +27,15 @@ produits:
     origine: "France"
     idC: 1
     idA: 1
+    nbRecherche: 0
+  - idP: 5
+    nom: "oasis"
+    poids: 35
+    ig: 75
+    bio: true
+    origine: "France"
+    idC: 2
+    idA: 2
+    nbRecherche: 0
+    
 
