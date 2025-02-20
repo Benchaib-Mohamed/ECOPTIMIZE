@@ -1,12 +1,10 @@
 package edu.ezip.ing1.pds;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
     JButton boutonAlt = new JButton("Rechercher une alternative à un produit");
@@ -28,12 +26,22 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         this.setVisible(true);
     }
     public void actionPerformed(ActionEvent e){
-        if(e.getSource() == boutonAlt){
-            new FenetreAlt();
+        try {
+            try{    
+                if(e.getSource() == boutonAlt){
+                    new FenetreAlt();
+                }
+                if(e.getSource() == boutonStat){
+                    //new FenetreAlt();
+                }
+                
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         }
-        if(e.getSource() == boutonStat){
-            //new FenetreAlt();
-        }
+        
     }
     
 }

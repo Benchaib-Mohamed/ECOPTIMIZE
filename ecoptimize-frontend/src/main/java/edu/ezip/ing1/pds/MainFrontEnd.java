@@ -18,19 +18,19 @@ import javax.swing.JFrame;
 
 public class MainFrontEnd {
 
-    private final static String LoggingLabel = "FrontEnd";
+    /*private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
-    private static final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
+    private static final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();*/
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-        logger.debug("Load Network config file : {}", networkConfig.toString());
+        //final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+        //logger.debug("Load Network config file : {}", networkConfig.toString());
 
-        final ProduitService produitService = new ProduitService(networkConfig);
+        //final ProduitService produitService = new ProduitService(networkConfig);
         //produitService.insertProduits();
         //Produits produits = produitService.selectProduits();
-        final AsciiTable asciiTable = new AsciiTable();
+        //final AsciiTable asciiTable = new AsciiTable();
         /*for (final Produit produit : produits.getProduits()) { 
             asciiTable.addRule();
             asciiTable.addRow(produit.getIdP(), produit.getNom(), produit.getPoids(), produit.getIg(), produit.getBio(), produit.getOrigine(), produit.getIdC(), produit.getIdA());
@@ -38,13 +38,13 @@ public class MainFrontEnd {
         asciiTable.addRule();
         logger.debug("\n{}\n", asciiTable.render());
         */
-        String s= "Granola";
-        Produit p=produitService.selectProduitNom(s);
-        asciiTable.addRule();
-        asciiTable.addRow(p.getIdP(), p.getNom(), p.getPoids(), p.getIg(), p.getBio(), p.getOrigine(), p.getIdC(), p.getIdA());
-        asciiTable.addRule();
-        logger.debug("\n{}\n", asciiTable.render());
-        //new FenetrePrincipale();
+        //String s= "Granola";
+        //Produit p=produitService.selectProduitNom(s);
+        //asciiTable.addRule();
+        //asciiTable.addRow(p.getIdP(), p.getNom(), p.getPoids(), p.getIg(), p.getBio(), p.getOrigine(), p.getIdC(), p.getIdA());
+        //asciiTable.addRule();
+        //logger.debug("\n{}\n", asciiTable.render());
+        new FenetrePrincipale();
     }
 }
 
