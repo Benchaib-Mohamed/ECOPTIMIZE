@@ -58,7 +58,7 @@ public class FenetreInser extends JFrame implements ActionListener {
             try {
                 
                     produitService.insertProduits();
-                    JOptionPane.showMessageDialog(this, "Le produit à bien était inserer");
+                    JOptionPane.showMessageDialog(this, "Le produit a bien été inseré");
                 
             } catch (IOException io) {
                 io.printStackTrace();
