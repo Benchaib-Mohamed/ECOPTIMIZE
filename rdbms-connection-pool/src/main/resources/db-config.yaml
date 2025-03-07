@@ -1,5 +1,5 @@
 databaseName: "sirius"
-host: "127.0.0.1"
+host: "172.31.253.214"
 port: 3306
 username : "toto"
 password: "toto"
