@@ -67,6 +67,7 @@ public class FenetreAlt extends JFrame implements ActionListener {
             try {
                 String s= entrerProd.getText();
                 Produit p=produitService.selectProduitNom(s);
+                Produit p2=produitService.selectProduitPrincipal(s);
                 carac2.setPreferredSize(new Dimension(70,150));
                 carac1.setPreferredSize(new Dimension(35,75));
                 carac2.setText(p.getNom()+" , avec "+p.getPoids()+ "g par portion, un IG de "+p.getIg()+" ."+ " BIO : "+p.getBio() + ", origine : "+ p.getOrigine());

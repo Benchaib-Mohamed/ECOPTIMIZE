@@ -34,6 +34,7 @@ public class ProduitService {
     final String selectRequestOrder = "SELECT_ALL_PRODUITS";
     final String selectNomRequestOrder = "SELECT_PRODUIT_NOM";
     final String updateRequestOrder="UPDATE_PRODUIT_NBRECHERCHE";
+    final String selectNomPRequestOrder="SELECT_PRODUIT_NOMP";
 
     private final NetworkConfig networkConfig;
 
@@ -168,30 +169,120 @@ public class ProduitService {
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
             Produit P= (Produit) joinedClientRequest.getResult();
-            
-            int NbrechercheIncrement=P.getNbRecherche()+1;
-            P.setNbRecherche(NbrechercheIncrement);
-            final String updateRequestId = UUID.randomUUID().toString();
-            Request request2=new Request();
-            request2.setNom(nom);
-            request2.setRequestId(updateRequestId);
-            request2.setRequestOrder(updateRequestOrder);
-            objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-            final byte []  requestByte = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request2);
-            LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestByte);
-            UpadateProduitClientRequest updateRequest=new UpadateProduitClientRequest(networkConfig, birthdate, request2, null, requestByte);
-            return P;
+             return P;
     
             
     
             
         }
         else {
-            logger.error("No students found");
+            logger.error("No Produit found");
             return null;
         }
     }
-    }
+   
+
+    public Produit selectProduitPrincipal(String nom) throws InterruptedException, IOException {
+        int birthdate=0;
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
+        final String requestId = UUID.randomUUID().toString();
+        final Request request = new Request();
+        request.setNom(nom);
+        request.setRequestId(requestId);
+        request.setRequestOrder(selectNomPRequestOrder);  
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
     
+        final SelectStudentNomClientRequest clientRequest = new SelectStudentNomClientRequest(
+                networkConfig, 0, request, null, requestBytes);
+        
+        clientRequests.push(clientRequest);
+    
+        if (!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+            Produit P= (Produit) joinedClientRequest.getResult();
+        
+            logger.debug("Before update: NbRecherche = {}", P.getNbRecherche());
+        int newNbRecherche = P.getNbRecherche() + 1;
+            P.setNbRecherche(newNbRecherche);
+            logger.debug("After update: NbRecherche = {}", P.getNbRecherche());
+            final String updateRequestId = UUID.randomUUID().toString();
+            Request request2=new Request();
+            
+            request2.setRequestId(updateRequestId);
+            request2.setRequestOrder(updateRequestOrder);
+            request2.setNom(nom);
+            String updatedProduit =objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(P);
+            request2.setRequestContent(updatedProduit);
+            objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+            
+            final byte []  requestByte = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request2);
+            LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestByte);
+            UpadateProduitClientRequest updateRequest=new UpadateProduitClientRequest(networkConfig, birthdate, request2, null, requestByte);
+            clientRequests.push(updateRequest);
+            final ClientRequest updateJoinedRequest= clientRequests.pop();
+            updateJoinedRequest.join();
+            logger.debug("Update complete for product: {}", P.getNom());
+            return P;
+        }
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        else {
+            logger.error("No Produit found");
+            return null;
+        }
+    }
+    public Produit selectProduitPrincipalSansUpdate(String nom) throws InterruptedException, IOException {
+        int birthdate=0;
+        final ObjectMapper objectMapper = new ObjectMapper();
+        
+        final Deque<ClientRequest> clientRequests=new ArrayDeque<ClientRequest>();
+        final String requestID=UUID.randomUUID().toString();
+        final Request request=new Request();
+        request.setNom(nom);
+        request.setRequestId(requestID);
+        request.setRequestOrder(selectNomPRequestOrder);
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+    
+        final SelectStudentNomClientRequest clientRequest = new SelectStudentNomClientRequest(
+                networkConfig, 0, request, null, requestBytes);
+        
+        clientRequests.push(clientRequest);
+    
+        if (!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+            Produit P= (Produit) joinedClientRequest.getResult();
+            return P;
 
 
+       
+
+
+
+}
+else {
+    logger.error("No Produit found");
+    return null;
+
+}
+}  
+
+}

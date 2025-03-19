@@ -65,7 +65,7 @@ public class FenetreStat extends JFrame implements ActionListener{
 try{
     try  {
         String s=F.getText();
-        Produit P=produitS.selectProduitNom(s);
+        Produit P=produitS.selectProduitPrincipalSansUpdate(s);
         L2.setText("Ce produit a été cherché " + P.getNbRecherche()  + " fois a cette borne");
         this.getContentPane().add(L2);
         this.setVisible(true);

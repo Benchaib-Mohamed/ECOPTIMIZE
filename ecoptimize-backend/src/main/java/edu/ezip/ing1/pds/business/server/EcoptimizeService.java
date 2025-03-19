@@ -1,6 +1,7 @@
 package edu.ezip.ing1.pds.business.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Produit;
 import edu.ezip.ing1.pds.business.dto.Produits;
@@ -27,7 +28,8 @@ public class EcoptimizeService {
         INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE t.Nom = ?");
         SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
-        UPDATE_PRODUIT_NBRECHERCHE("UPDATE produits SET NbRecherche = ? WHERE Nom = ?");
+        UPDATE_PRODUIT_NBRECHERCHE("UPDATE produits SET NbRecherche = ? WHERE Nom = ?"),
+        SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche FROM produits t WHERE t.Nom=?");
         private final String query;
 
         private Queries(final String query) {
@@ -63,7 +65,17 @@ public class EcoptimizeService {
             case SELECT_PRODUIT_NOM:
             
                 response = SelectProduitNom(request, connection,s);
-            default:
+                break;
+            
+            case  UPDATE_PRODUIT_NBRECHERCHE :
+                 UpdateProduitNom(request, connection);
+                 break;
+            case SELECT_PRODUIT_NOMP :
+                response=SelectProduitNomP(request, connection, s);
+                break;
+                
+                
+                default:
                 break;
         }
 
@@ -124,7 +136,54 @@ public class EcoptimizeService {
         final PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_PRODUIT_NOM.query);
         stmt.setString(1,s);
         final ResultSet res = stmt.executeQuery();
-        res.next();
+        if (res.next()) {
+            Produit produit = new Produit();
+            produit.setIdP(res.getInt(1));  
+            produit.setNom(res.getString(2));
+            produit.setPoids(res.getInt(3));  
+            produit.setIg(res.getInt(4));  
+            produit.setBio(res.getBoolean(5));  
+            produit.setOrigine(res.getString(6));
+            produit.setIdC(res.getInt(7));  
+            produit.setIdA(res.getInt(8)); 
+            produit.setNbRecherche(res.getInt(9));
+        
+            return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
+        } else {
+            logger.warn("Aucun produit trouvé avec le nom : {}", s);
+            return new Response(request.getRequestId(), "Produit non trouvé");
+}
+            
+        }
+
+    
+        
+    
+
+    private void UpdateProduitNom(final Request request, final Connection connection) throws SQLException, JsonProcessingException,IOException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class);
+        
+        
+        final PreparedStatement stmt = connection.prepareStatement(Queries.UPDATE_PRODUIT_NBRECHERCHE.query);
+        stmt.setInt(1,produit.getNbRecherche());
+        stmt.setString(2, produit.getNom());
+        
+        int rowsUpdated = stmt.executeUpdate();
+        if (rowsUpdated > 0) {
+            logger.info("Le nombre de recherches pour le produit '{}' a été mis à jour avec succès.", produit.getNom());
+        } else {
+            logger.error("Aucun produit trouvé avec le nom '{}'. Aucune mise à jour effectuée.", produit.getNom());
+        }
+    }
+        
+    private Response SelectProduitNomP(final Request request, final Connection connection, String s) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_PRODUIT_NOMP.query);
+        stmt.setString(1,s);
+        final ResultSet res = stmt.executeQuery();
+        if (res.next()){
 
         Produit produit = new Produit();
        
@@ -140,7 +199,28 @@ public class EcoptimizeService {
             produit.setNbRecherche(res.getInt(9));
 
     
-        return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));}
+        else {
+            logger.warn("Aucun produit trouvé avec le nom : {}", s);
+            return new Response(request.getRequestId(), "Produit non trouvé");}
     }
-}    
+
+
+        
+
+       
+
+
+
+         
+
+
+
+
+
+    }
+
+
+
+    
     
