@@ -14,8 +14,11 @@ import edu.ezip.ing1.pds.services.ProduitService;
 
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+
+import javax.imageio.IIOException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -59,15 +62,15 @@ public class FenetreAlt extends JFrame implements ActionListener {
 
         
     }
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)  {
     try {
         String s = entrerProd.getText();
         Produit p = null;
         try {
-<<<<<<< HEAD
+
             try {
-                String s= entrerProd.getText();
-                Produit p=produitService.selectProduitNom(s);
+                 s= entrerProd.getText();
+                 p=produitService.selectProduitNom(s);
                 Produit p2=produitService.selectProduitPrincipal(s);
                 carac2.setPreferredSize(new Dimension(70,150));
                 carac1.setPreferredSize(new Dimension(35,75));
@@ -82,14 +85,10 @@ public class FenetreAlt extends JFrame implements ActionListener {
             } 
         } catch (InterruptedException ie) {
             ie.printStackTrace();
-=======
+
             p = produitService.selectProduitNom(s);
-        } catch (IOException er) {
-            er.printStackTrace();
-        } catch (InterruptedException er) {
-            er.printStackTrace();
->>>>>>> 054f20e56a2f4608cabb9b73934d38836cc22510
-        }
+        } 
+        
 
         carac2.setPreferredSize(new Dimension(70, 150));
         carac1.setPreferredSize(new Dimension(35, 75));

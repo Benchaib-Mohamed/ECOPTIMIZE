@@ -218,25 +218,11 @@ public class ProduitService {
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
             Produit P= (Produit) joinedClientRequest.getResult();
-<<<<<<< HEAD
+
              return P;
-=======
-            if(P!= null){
-                int NbrechercheIncrement=P.getNbRecherche()+1;
-                P.setNbRecherche(NbrechercheIncrement);
-            }
-            
-            final String updateRequestId = UUID.randomUUID().toString();
-            Request request2=new Request();
-            request2.setNom(nom);
-            request2.setRequestId(updateRequestId);
-            request2.setRequestOrder(updateRequestOrder);
-            objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-            final byte []  requestByte = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request2);
-            LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestByte);
-            UpadateProduitClientRequest updateRequest=new UpadateProduitClientRequest(networkConfig, birthdate, request2, null, requestByte);
-            return P;
->>>>>>> 054f20e56a2f4608cabb9b73934d38836cc22510
+
+           
+
     
             
     
