@@ -1,7 +1,5 @@
 package edu.ezip.ing1.pds;
 
-import javax.swing.JFrame;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,26 +59,35 @@ public class FenetreAlt extends JFrame implements ActionListener {
 
         
     }
-    public void actionPerformed(ActionEvent e){
-        
+    public void actionPerformed(ActionEvent e) {
+    try {
+        String s = entrerProd.getText();
+        Produit p = null;
         try {
-            try {
-                String s= entrerProd.getText();
-                Produit p=produitService.selectProduitNom(s);
-                carac2.setPreferredSize(new Dimension(70,150));
-                carac1.setPreferredSize(new Dimension(35,75));
-                carac2.setText(p.getNom()+" , avec "+p.getPoids()+ "g par portion, un IG de "+p.getIg()+" ."+ " BIO : "+p.getBio() + ", origine : "+ p.getOrigine());
-                pSud.add(BorderLayout.NORTH,carac1);
-                pSud.add(carac2);
-
-                
-                this.setVisible(true);
-            } catch (IOException io) {
-                io.printStackTrace();
-            } 
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            p = produitService.selectProduitNom(s);
+        } catch (IOException er) {
+            er.printStackTrace();
+        } catch (InterruptedException er) {
+            er.printStackTrace();
         }
-        
+
+        carac2.setPreferredSize(new Dimension(70, 150));
+        carac1.setPreferredSize(new Dimension(35, 75));
+
+        if (p != null) {
+            carac2.setText(p.getNom() + " , avec " + p.getPoids() + "g par portion, un IG de " + p.getIg() + " ." +
+                    " BIO : " + p.getBio() + ", origine : " + p.getOrigine());
+        } else {
+            carac2.setText("Produit introuvable"); 
+        }
+
+        pSud.add(BorderLayout.NORTH, carac1);
+        pSud.add(carac2);
+        this.setVisible(true);
+
+    } catch (Exception ex) { 
+        ex.printStackTrace();
+        carac2.setText("Erreur lors de la recherche du produit");
     }
+}
 }
