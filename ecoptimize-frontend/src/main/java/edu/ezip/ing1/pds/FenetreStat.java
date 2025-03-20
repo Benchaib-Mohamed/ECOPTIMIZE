@@ -3,6 +3,8 @@ package edu.ezip.ing1.pds;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.*;
 
@@ -32,6 +34,9 @@ public class FenetreStat extends JFrame implements ActionListener{
      final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
     final ProduitService produitS = new ProduitService(networkConfig);
     JLabel L2=new JLabel();
+    JPanel Panels;
+    JPanel P2;
+    CardLayout C=new CardLayout();
     
     
     
@@ -39,22 +44,23 @@ public class FenetreStat extends JFrame implements ActionListener{
     
     
     public FenetreStat(){
-        setTitle("Statistique du produit");
+        setTitle("Information");
         setSize(600,600);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(2,2));
-        JLabel L=new JLabel("Selectionné votre produit ");
+        Panels=new JPanel(C);
+        JPanel P1=new JPanel(new GridLayout(3,1));
         
-        
-
-        
-        
+        Panels.add(P1, "FirstPanel");
+       
+        JLabel SP=new JLabel("Selectionner votre produit");
         JButton B1=new JButton("Valider");
+        P1.add(SP);
+        P1.add(F);
+        P1.add(B1);
         B1.addActionListener(this);
-        getContentPane().add(L);
-        getContentPane().add(F);
-        getContentPane().add(B1);
+        add(Panels);
         setVisible(true);
+       
         
 
 
@@ -65,10 +71,44 @@ public class FenetreStat extends JFrame implements ActionListener{
 try{
     try  {
         String s=F.getText();
-        Produit P=produitS.selectProduitPrincipalSansUpdate(s);
-        L2.setText("Ce produit a été cherché " + P.getNbRecherche()  + " fois a cette borne");
-        this.getContentPane().add(L2);
-        this.setVisible(true);
+ while(true)  { try{    Produit P=produitS.selectProduitPrincipalSansUpdate(s);
+        P2=new JPanel(new BorderLayout());
+        JLabel Nom=new JLabel(P.getNom());
+        Nom.setFont(new Font("Arial", Font.BOLD, 35));
+        Nom.setHorizontalAlignment(JLabel.CENTER);
+        P2.add(Nom,BorderLayout.NORTH);
+        JPanel P3=new JPanel(new GridLayout(4,4));
+       
+        JLabel L2=new JLabel("Nombre de recherche effectuer sur ce produit ");
+        JLabel NbRecherche=new JLabel(String.valueOf(P.getNbRecherche()));
+        JLabel L3 =new JLabel("BIO");
+        JLabel Bio=new JLabel(String.valueOf(P.getBio()));
+        JLabel L4 =new JLabel("Indice glycémique du produit");
+        JLabel ig=new JLabel(String.valueOf(P.getIg()));
+        JLabel L5 =new JLabel("Origine du produit");
+        JLabel Origine=new JLabel(P.getOrigine());
+        P3.add(L2);
+        P3.add(NbRecherche);
+        P3.add(L3);
+        P3.add(Bio);
+        P3.add(L4);
+        P3.add(ig);
+        P3.add(L5);
+        P3.add(Origine);
+        P2.add(P3,BorderLayout.CENTER);
+        Panels.add(P2,"Panneau 2");
+        C.show(Panels, "Panneau 2");
+        break;}
+        catch(NullPointerException np){
+            JOptionPane.showMessageDialog( this,"Produit introuvable");
+            break;
+
+        }}
+
+
+        
+
+
 
         
 

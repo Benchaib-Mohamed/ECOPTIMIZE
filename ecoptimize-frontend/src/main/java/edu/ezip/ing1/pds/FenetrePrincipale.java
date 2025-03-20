@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
     JButton boutonAlt = new JButton("Rechercher une alternative à un produit");
-    JButton boutonStat = new JButton("Consulter les statistiques relatives à un produit");
+    JButton boutonStat = new JButton("Consulter les informations relatives à un produit");
     JButton boutonInser = new JButton("Inserer un produit dans la base de données");
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
