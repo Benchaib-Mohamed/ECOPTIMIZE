@@ -107,6 +107,8 @@ public class FenetreAlt extends JFrame implements ActionListener {
     } catch (Exception ex) { 
         ex.printStackTrace();
         carac2.setText("Erreur lors de la recherche du produit");
+        pSud.add(carac2);
+        this.setVisible(true);
     }
 }
 }
