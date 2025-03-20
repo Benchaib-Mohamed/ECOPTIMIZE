@@ -48,12 +48,17 @@ public class FenetreStat extends JFrame implements ActionListener{
         setSize(600,600);
         setLocationRelativeTo(null);
         Panels=new JPanel(C);
-        JPanel P1=new JPanel(new GridLayout(3,1));
+        JPanel P1=new JPanel(new GridLayout(3,1,10,10));
+        P1.setBackground(new Color(245,245,245));
         
         Panels.add(P1, "FirstPanel");
        
         JLabel SP=new JLabel("Selectionner votre produit");
+        SP.setFont(new Font("Arial", Font.BOLD, 18));
         JButton B1=new JButton("Valider");
+        B1.setFont(new Font("Arial", Font.BOLD, 16));
+        F.setFont(new Font("Arial", Font.PLAIN, 16));
+
         P1.add(SP);
         P1.add(F);
         P1.add(B1);
@@ -67,61 +72,56 @@ public class FenetreStat extends JFrame implements ActionListener{
 
     }
     
-    public void actionPerformed(ActionEvent e) {
-try{
-    try  {
-        String s=F.getText();
- while(true)  { try{    Produit P=produitS.selectProduitPrincipalSansUpdate(s);
-        P2=new JPanel(new BorderLayout());
-        JLabel Nom=new JLabel(P.getNom());
-        Nom.setFont(new Font("Arial", Font.BOLD, 35));
-        Nom.setHorizontalAlignment(JLabel.CENTER);
-        P2.add(Nom,BorderLayout.NORTH);
-        JPanel P3=new JPanel(new GridLayout(4,4));
-       
-        JLabel L2=new JLabel("Nombre de recherche effectuer sur ce produit ");
-        JLabel NbRecherche=new JLabel(String.valueOf(P.getNbRecherche()));
-        JLabel L3 =new JLabel("BIO");
-        JLabel Bio=new JLabel(String.valueOf(P.getBio()));
-        JLabel L4 =new JLabel("Indice glycémique du produit");
-        JLabel ig=new JLabel(String.valueOf(P.getIg()));
-        JLabel L5 =new JLabel("Origine du produit");
-        JLabel Origine=new JLabel(P.getOrigine());
-        P3.add(L2);
-        P3.add(NbRecherche);
-        P3.add(L3);
-        P3.add(Bio);
-        P3.add(L4);
-        P3.add(ig);
-        P3.add(L5);
-        P3.add(Origine);
-        P2.add(P3,BorderLayout.CENTER);
-        Panels.add(P2,"Panneau 2");
-        C.show(Panels, "Panneau 2");
-        break;}
-        catch(NullPointerException np){
-            JOptionPane.showMessageDialog( this,"Produit introuvable");
-            break;
-
-        }}
-
-
-        
-
-
-
-        
-
-
-
-
-    }catch(IOException io){
-        io.printStackTrace();
+    public void actionPerformed(ActionEvent e)  {
+     String s = F.getText();
+        try {
+            Produit P = produitS.selectProduitPrincipalSansUpdate(s);
+            if (P != null) {
+                P2 = new JPanel(new BorderLayout());
+                JLabel Nom = new JLabel(P.getNom());
+                Nom.setFont(new Font("Arial", Font.BOLD, 35));
+                Nom.setHorizontalAlignment(JLabel.CENTER);
+                P2.add(Nom, BorderLayout.NORTH);
+    
+                JPanel P3 = new JPanel(new GridLayout(4, 2)); // Simplification pour deux colonnes
+                P3.setBackground(new Color(245, 245, 245)); // Couleur de fond claire
+    
+                // Labels et valeurs avec amélioration visuelle
+                P3.add(createLabel("Nombre de recherches effectuées :"));
+                P3.add(createValueLabel(String.valueOf(P.getNbRecherche())));
+                P3.add(createLabel("BIO:"));
+                P3.add(createValueLabel(String.valueOf(P.getBio())));
+                P3.add(createLabel("Indice glycémique du produit:"));
+                P3.add(createValueLabel(String.valueOf(P.getIg())));
+                P3.add(createLabel("Origine du produit:"));
+                P3.add(createValueLabel(P.getOrigine()));
+    
+                P2.add(P3, BorderLayout.CENTER);
+                Panels.add(P2, "Panneau 2");
+                C.show(Panels, "Panneau 2");
+            } else {
+                JOptionPane.showMessageDialog(this, "Produit introuvable");
+            }
+        } catch (IOException | NullPointerException | InterruptedException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erreur lors de la recherche du produit");
+            
+        }
     }
-}catch(InterruptedException ie){
-    ie.printStackTrace();
-}
-       
+    
+    private JLabel createLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", Font.PLAIN, 16));
+        label.setForeground(new Color(100, 100, 100)); 
+        return label;
+    }
+    
+    private JLabel createValueLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", Font.BOLD, 18));
+        label.setForeground(new Color(30, 30, 30)); 
+        return label;
+    }
        
 
        
@@ -131,7 +131,7 @@ try{
         
     }
     
-    }
+    
     
     
     
