@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class FenetrePrincipale extends JFrame implements ActionListener {
-    JButton boutonAlt = new JButton("Rechercher une alternative à un produit");
-    JButton boutonStat = new JButton("Consulter les informations relatives à un produit");
-    JButton boutonInser = new JButton("Inserer un produit dans la base de données");
+    JButton boutonAlt = new JButton("🔎Rechercher une alternative à un produit");
+    JButton boutonStat = new JButton("ℹ️Consulter les informations relatives à un produit");
+    JButton boutonInser = new JButton("➕Inserer un produit dans la base de données");
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
     JPanel reste = new JPanel();
@@ -29,10 +29,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         reste.setLayout(new FlowLayout());
         message.setHorizontalAlignment(SwingConstants.CENTER);
         message.setFont(new Font("Arial", Font.BOLD,30));
+        message.setOpaque(true); 
+        message.setBackground(new Color(240, 255, 240));
         titre.add(message);
         boutonAlt.setPreferredSize(new Dimension(350,350));
+
         boutonStat.setPreferredSize(new Dimension(350,350));
+     
         boutonInser.setPreferredSize(new Dimension(350,350));
+        
         reste.add(boutonAlt);
         reste.add(boutonStat);
         reste.add(boutonInser);
@@ -40,6 +45,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.repaint();
     }
     public void actionPerformed(ActionEvent e){
         try {
@@ -64,3 +70,6 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
     }
     
 }
+
+
+

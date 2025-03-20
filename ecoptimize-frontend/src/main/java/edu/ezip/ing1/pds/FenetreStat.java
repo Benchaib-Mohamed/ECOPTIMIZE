@@ -53,6 +53,8 @@ public class FenetreStat extends JFrame implements ActionListener{
         Panels.add(P1, "FirstPanel");
        
         JLabel SP=new JLabel("Selectionner votre produit");
+        SP.setOpaque(true); 
+        SP.setBackground(new Color(240, 255, 240));
         JButton B1=new JButton("Valider");
         P1.add(SP);
         P1.add(F);
@@ -74,6 +76,8 @@ try{
  while(true)  { try{    Produit P=produitS.selectProduitPrincipalSansUpdate(s);
         P2=new JPanel(new BorderLayout());
         JLabel Nom=new JLabel(P.getNom());
+        Nom.setOpaque(true); 
+        Nom.setBackground(new Color(240, 255, 240));
         Nom.setFont(new Font("Arial", Font.BOLD, 35));
         Nom.setHorizontalAlignment(JLabel.CENTER);
         P2.add(Nom,BorderLayout.NORTH);
