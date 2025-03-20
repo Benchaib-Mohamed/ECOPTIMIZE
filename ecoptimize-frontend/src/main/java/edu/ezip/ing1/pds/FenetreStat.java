@@ -55,6 +55,8 @@ public class FenetreStat extends JFrame implements ActionListener{
        
         JLabel SP=new JLabel("Selectionner votre produit");
         SP.setFont(new Font("Arial", Font.BOLD, 18));
+        SP.setOpaque(true);  
+        SP.setBackground(new Color(204, 255, 204));
         JButton B1=new JButton("Valider");
         B1.setFont(new Font("Arial", Font.BOLD, 16));
         F.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -80,6 +82,8 @@ public class FenetreStat extends JFrame implements ActionListener{
                 P2 = new JPanel(new BorderLayout());
                 JLabel Nom = new JLabel(P.getNom());
                 Nom.setFont(new Font("Arial", Font.BOLD, 35));
+                Nom.setOpaque(true);  
+                Nom.setBackground(new Color(204, 255, 204));
                 Nom.setHorizontalAlignment(JLabel.CENTER);
                 P2.add(Nom, BorderLayout.NORTH);
     

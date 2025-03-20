@@ -1,7 +1,5 @@
 package edu.ezip.ing1.pds;
 
-import javax.swing.JFrame;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,19 +33,24 @@ public class FenetreInser extends JFrame implements ActionListener {
 
     
     JButton inser = new JButton("Cliquez pour commencer l'insertion d'un produit");
-
+    
     public FenetreInser() throws IOException, InterruptedException{
 
         
         this.setTitle("Insertion de produit");
         this.setSize(600,600);
+        inser.setBackground(new Color(204, 255, 204));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
         
-        
+        // Rendre le bouton transparent sauf le texte
+        inser.setContentAreaFilled(false);  
+        inser.setBorderPainted(false);      
+        inser.setFocusPainted(false);      
         inser.addActionListener(this);
-        
+        this.getContentPane().setBackground(new Color(204, 255, 204));
         this.getContentPane().add(inser);
+
         this.setVisible(true);
 
         

@@ -55,6 +55,8 @@ public class FenetreAlt extends JFrame implements ActionListener {
         pNord.setLayout(new GridLayout(3,2));
         pSud.setLayout(new BorderLayout());
         rech.addActionListener(this);
+        l.setOpaque(true);  
+        l.setBackground(new Color(204, 255, 204));
         pNord.add(l);  
         pNord.add(entrerProd);
         pNord.add(rech);
@@ -74,6 +76,8 @@ public class FenetreAlt extends JFrame implements ActionListener {
                 Produit p2=produitService.selectProduitPrincipal(s);
                 carac2.setPreferredSize(new Dimension(70,150));
                 carac1.setPreferredSize(new Dimension(35,75));
+                carac1.setOpaque(true);  
+                carac1.setBackground(new Color(204, 255, 204));
                 carac2.setText(p.getNom()+" , avec "+p.getPoids()+ "g par portion, un IG de "+p.getIg()+" ."+ " BIO : "+p.getBio() + ", origine : "+ p.getOrigine());
                 pSud.add(BorderLayout.NORTH,carac1);
                 pSud.add(carac2);
