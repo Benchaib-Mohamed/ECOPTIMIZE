@@ -90,7 +90,7 @@ public class FenetreStat extends JFrame implements ActionListener{
                 JPanel P3 = new JPanel(new GridLayout(4, 2)); // Simplification pour deux colonnes
                 P3.setBackground(new Color(245, 245, 245)); // Couleur de fond claire
     
-                P3.add(createLabel("Nombre de recherches effectuées :"));
+                P3.add(createLabel("Nombre de recherches d'alt effectuées :"));
                 P3.add(createValueLabel(String.valueOf(P.getNbRecherche())));
                 P3.add(createLabel("BIO:"));
             if(P.getBio()==true){    
@@ -98,12 +98,14 @@ public class FenetreStat extends JFrame implements ActionListener{
                 else{P3.add(createValueLabel("❌"));}
                 P3.add(createLabel("Indice glycémique du produit:"));
              if(P.getIg()<40) {  P3.add(createValueLabel(String.valueOf(P.getIg()+" 🟢")));}
-            else if(P.getIg()<=40 || P.getIg()<=60){P3.add(createValueLabel(String.valueOf(P.getIg()+ " 🟠")));}
+            else if(40>=P.getIg() || P.getIg()<=60){P3.add(createValueLabel(String.valueOf(P.getIg()+ "🟠")));}
             else if(P.getIg()>60){P3.add(createValueLabel(String.valueOf(P.getIg()+" 🔴")));}
              
                 P3.add(createLabel("Origine du produit:"));
-         if(P.getOrigine().equals("France"))   {    P3.add(createValueLabel(P.getOrigine()+ " "));}
-         else{P3.add(createValueLabel(P.getOrigine()));}
+         
+                if(P.getOrigine().equals("France"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🐓"));}
+                else if(P.getOrigine().equals("Etats Unis"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🦅"));}
+                else{P3.add(createValueLabel(P.getOrigine()));}
 
 
     
