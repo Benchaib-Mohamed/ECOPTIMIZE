@@ -98,7 +98,7 @@ public class FenetreStat extends JFrame implements ActionListener{
                 else{P3.add(createValueLabel("❌"));}
                 P3.add(createLabel("Indice glycémique du produit:"));
              if(P.getIg()<40) {  P3.add(createValueLabel(String.valueOf(P.getIg()+" 🟢")));}
-            else if(40>P.getIg() && P.getIg()<60){P3.add(createValueLabel(String.valueOf(P.getIg()+ " 🟠")));}
+            else if(P.getIg()<=40 || P.getIg()<=60){P3.add(createValueLabel(String.valueOf(P.getIg()+ " 🟠")));}
             else if(P.getIg()>60){P3.add(createValueLabel(String.valueOf(P.getIg()+" 🔴")));}
              
                 P3.add(createLabel("Origine du produit:"));
