@@ -98,11 +98,14 @@ public class FenetreStat extends JFrame implements ActionListener{
                 else{P3.add(createValueLabel("❌"));}
                 P3.add(createLabel("Indice glycémique du produit:"));
              if(P.getIg()<40) {  P3.add(createValueLabel(String.valueOf(P.getIg()+" 🟢")));}
-            else if(40<P.getIg() && P.getIg()<60){P3.add(createValueLabel(String.valueOf(P.getIg()+ " 🟠")));}
+            else if(40>P.getIg() && P.getIg()<60){P3.add(createValueLabel(String.valueOf(P.getIg()+ " 🟠")));}
             else if(P.getIg()>60){P3.add(createValueLabel(String.valueOf(P.getIg()+" 🔴")));}
              
                 P3.add(createLabel("Origine du produit:"));
-                P3.add(createValueLabel(P.getOrigine()));
+         if(P.getOrigine().equals("France"))   {    P3.add(createValueLabel(P.getOrigine()+ " "));}
+         else{P3.add(createValueLabel(P.getOrigine()));}
+
+
     
                 P2.add(P3, BorderLayout.CENTER);
                 Panels.add(P2, "Panneau 2");
