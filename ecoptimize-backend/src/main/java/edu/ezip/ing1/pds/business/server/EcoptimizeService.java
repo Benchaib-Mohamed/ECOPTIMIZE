@@ -54,7 +54,7 @@ public class EcoptimizeService {
         Response response = null;
         String s=request.getNom();
 
-        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());//request.get... =ce qui est recu de ProduitService
+        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());//request.get... =ordre de requete qui est recu de ProduitService
         switch(queryEnum) {
             case SELECT_ALL_PRODUITS:
                 response = SelectAllProduits(request, connection);

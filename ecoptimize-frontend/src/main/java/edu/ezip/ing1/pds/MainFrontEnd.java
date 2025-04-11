@@ -10,7 +10,7 @@ public class MainFrontEnd {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        new FenetrePrincipale();
+        new FenetrePrincipale2();
     }
 }
 

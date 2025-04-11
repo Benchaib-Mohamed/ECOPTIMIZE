@@ -6,15 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class FenetrePrincipale extends JFrame implements ActionListener {
+public class FenetreUser extends JFrame implements ActionListener {
     
     JButton boutonAlt = new JButton("🔎Rechercher une alternative à un produit");
     JButton boutonStat = new JButton("ℹ️Consulter les informations relatives à un produit");
-    JButton boutonInser = new JButton("➕ Inserer un produit dans la base de données");
+    
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
     JPanel reste = new JPanel();
-    public FenetrePrincipale(){
+    public FenetreUser(){
 
         this.setTitle("Ecoptimize");
         
@@ -23,7 +23,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         message.setPreferredSize(new Dimension(50,150));
         boutonAlt.addActionListener(this);
         boutonStat.addActionListener(this);
-        boutonInser.addActionListener(this);
+        
         //this.getContentPane().setBackground(Color.BLACK);
         this.getContentPane().add(BorderLayout.NORTH, titre);
         titre.setLayout(new BorderLayout());
@@ -35,10 +35,10 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
         titre.add(message);
         boutonAlt.setPreferredSize(new Dimension(350,350));
         boutonStat.setPreferredSize(new Dimension(350,350));
-        boutonInser.setPreferredSize(new Dimension(350,350));
+        
         reste.add(boutonAlt);
         reste.add(boutonStat);
-        reste.add(boutonInser);
+        
         this.getContentPane().add(BorderLayout.CENTER, reste);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,9 +53,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener {
                 if(e.getSource() == boutonStat){
                     new FenetreStat();
                 }
-                if(e.getSource() == boutonInser){
-                    new FenetreInser();
-                }
+                
                 
             }catch(IOException ex){
                 ex.printStackTrace();
