@@ -132,7 +132,7 @@ public class ProduitService {
                 JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide (1 ou 2) pour la catégorie.");
             }
         }
-
+       
 
         prod.setIdC(cate);
         prod.setIdA(cate);
@@ -337,5 +337,11 @@ else {
 
 }
 }  
+
+
+
+
+
+
 
 }

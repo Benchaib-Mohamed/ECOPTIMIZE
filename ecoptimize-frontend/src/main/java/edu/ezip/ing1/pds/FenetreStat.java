@@ -87,8 +87,8 @@ public class FenetreStat extends JFrame implements ActionListener{
                 Nom.setHorizontalAlignment(JLabel.CENTER);
                 P2.add(Nom, BorderLayout.NORTH);
     
-                JPanel P3 = new JPanel(new GridLayout(4, 2)); // Simplification pour deux colonnes
-                P3.setBackground(new Color(245, 245, 245)); // Couleur de fond claire
+                JPanel P3 = new JPanel(new GridLayout(4, 2)); 
+                P3.setBackground(new Color(245, 245, 245));
     
                 P3.add(createLabel("Nombre de recherches d'alt effectuées :"));
                 P3.add(createValueLabel(String.valueOf(P.getNbRecherche())));

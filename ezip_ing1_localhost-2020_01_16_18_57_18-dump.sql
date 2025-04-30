@@ -34,6 +34,7 @@ CREATE TABLE produits(
    IdC INT,
    IdA INT,
    NbRecherche INT DEFAULT 0,
+   EmpreinteC INT ,
    PRIMARY KEY(IdP),
    FOREIGN KEY(IdC) REFERENCES catégorie(IdC),
    FOREIGN KEY(IdA) REFERENCES aleternatives(IdA)
