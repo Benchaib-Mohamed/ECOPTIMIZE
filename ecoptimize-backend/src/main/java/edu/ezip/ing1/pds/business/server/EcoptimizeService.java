@@ -29,7 +29,7 @@ public class EcoptimizeService {
         //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE t.Nom = ?");
         SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
         UPDATE_PRODUIT_NBRECHERCHE("UPDATE produits SET NbRecherche = ? WHERE Nom = ?"),
-        SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche FROM produits t WHERE t.Nom=?");
+        SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche , t.EmpreinteC FROM produits t WHERE t.Nom=?");
         private final String query;
 
         private Queries(final String query) {
@@ -197,6 +197,7 @@ public class EcoptimizeService {
             produit.setIdC(res.getInt(7));  
             produit.setIdA(res.getInt(8)); 
             produit.setNbRecherche(res.getInt(9));
+            produit.setEmpreinteC(res.getInt(10));
 
     
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));}

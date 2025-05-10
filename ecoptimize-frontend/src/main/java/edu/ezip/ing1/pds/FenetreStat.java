@@ -87,7 +87,7 @@ public class FenetreStat extends JFrame implements ActionListener{
                 Nom.setHorizontalAlignment(JLabel.CENTER);
                 P2.add(Nom, BorderLayout.NORTH);
     
-                JPanel P3 = new JPanel(new GridLayout(4, 2)); 
+                JPanel P3 = new JPanel(new GridLayout(5, 2)); 
                 P3.setBackground(new Color(245, 245, 245));
     
                 P3.add(createLabel("Nombre de recherches d'alt effectuées :"));
@@ -106,6 +106,10 @@ public class FenetreStat extends JFrame implements ActionListener{
                 if(P.getOrigine().equals("France"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🐓"));}
                 else if(P.getOrigine().equals("Etats Unis"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🦅"));}
                 else{P3.add(createValueLabel(P.getOrigine()));}
+                P3.add(createLabel("Empreinte Carbonne du produit "));
+                if(P.getEmpreinteC()>=20){ P3.add(createValueLabel(P.getEmpreinteC() + "🔴"));}
+                else if(P.getEmpreinteC()<20 && P.getEmpreinteC()>=10){P3.add(createValueLabel(P.getEmpreinteC()+"🟠"));}
+                else { P3.add(createValueLabel(P.getEmpreinteC()+"🟢"));}
 
 
     

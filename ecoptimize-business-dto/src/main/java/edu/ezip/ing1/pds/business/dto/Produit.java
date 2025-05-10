@@ -36,6 +36,8 @@ public class Produit {
     
     @JsonProperty("nbRecherche")
     private int nbRecherche;
+    @JsonProperty("EmpreinteC")
+    private int EmpreinteC;
 
     public Produit() {
     }
@@ -107,6 +109,10 @@ public class Produit {
     public void setIdC(int idC) {
         this.idC = idC;
     }
+    public void setEmpreinteC(int E){
+        this.EmpreinteC=E;
+
+    }
 
     public int getIdA() {
         return idA;
@@ -114,6 +120,9 @@ public class Produit {
 
     public void setIdA(int idA) {
         this.idA = idA;
+    }
+    public int getEmpreinteC(){
+        return EmpreinteC;
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
