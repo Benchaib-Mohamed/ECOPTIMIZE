@@ -25,6 +25,7 @@ public class EcoptimizeService {
 
     private enum Queries {
         SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t"),
+        DELETE_PRODUIT("DELETE FROM produits WHERE Nom = ?"),
         INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE t.Nom = ?");
         SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
@@ -58,6 +59,9 @@ public class EcoptimizeService {
         switch(queryEnum) {
             case SELECT_ALL_PRODUITS:
                 response = SelectAllProduits(request, connection);
+                break;
+            case DELETE_PRODUIT:
+                DeleteProduitNom(request, connection);
                 break;
             case INSERT_PRODUIT:
                 response = InsertProduit(request, connection);
@@ -162,7 +166,7 @@ public class EcoptimizeService {
 
     private void UpdateProduitNom(final Request request, final Connection connection) throws SQLException, JsonProcessingException,IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        
         final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class);
         
         
@@ -175,6 +179,22 @@ public class EcoptimizeService {
             logger.info("Le nombre de recherches pour le produit '{}' a été mis à jour avec succès.", produit.getNom());
         } else {
             logger.error("Aucun produit trouvé avec le nom '{}'. Aucune mise à jour effectuée.", produit.getNom());
+        }
+    }
+
+    private void DeleteProduitNom(final Request request, final Connection connection) throws SQLException, JsonProcessingException, IOException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+
+        final Produit produit = objectMapper.readValue(request.getRequestBody(), Produit.class);
+    
+        final PreparedStatement stmt = connection.prepareStatement(Queries.DELETE_PRODUIT.query);
+        stmt.setString(1, produit.getNom());
+    
+        int rowsDeleted = stmt.executeUpdate();
+        if (rowsDeleted > 0) {
+            logger.info("Le produit '{}' a été supprimé avec succès.", produit.getNom());
+        } else {
+            logger.error("Aucun produit trouvé avec le nom '{}'. Aucune suppression effectuée.", produit.getNom());
         }
     }
         

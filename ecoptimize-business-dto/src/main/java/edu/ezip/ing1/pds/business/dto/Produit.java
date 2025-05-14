@@ -8,49 +8,40 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@JsonRootName(value = "produits")
 public class Produit {
 
-    @JsonProperty("idP")
     private int idP; 
 
-    @JsonProperty("nom")
     private String nom;
 
-    @JsonProperty("poids")
     private int poids; 
-    @JsonProperty("ig")
+
     private int ig; 
 
-    @JsonProperty("bio")
     private boolean bio; 
 
-    @JsonProperty("origine")
     private String origine;
 
-    @JsonProperty("idC")
     private int idC; 
 
-    @JsonProperty("idA")
     private int idA;
     
-    @JsonProperty("nbRecherche")
     private int nbRecherche;
-    @JsonProperty("EmpreinteC")
-    private int EmpreinteC;
+    
+    private int empreinteC;
 
     public Produit() {
     }
 
     public final Produit build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet, "idP", "nom", "poids", "ig", "bio", "origine", "idC", "idA", "nbRecherche");
+        setFieldsFromResultSet(resultSet, "idP", "nom", "poids", "ig", "bio", "origine", "idC", "idA", "nbRecherche","empreinteC");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, idP, nom, poids, ig, bio, origine, idC, idA,nbRecherche);
+        return buildPreparedStatement(preparedStatement, idP, nom, poids, ig, bio, origine, idC, idA,nbRecherche,empreinteC);
     }
     
     // Getters et setters
@@ -110,7 +101,7 @@ public class Produit {
         this.idC = idC;
     }
     public void setEmpreinteC(int E){
-        this.EmpreinteC=E;
+        this.empreinteC=E;
 
     }
 
@@ -122,7 +113,7 @@ public class Produit {
         this.idA = idA;
     }
     public int getEmpreinteC(){
-        return EmpreinteC;
+        return empreinteC;
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -153,7 +144,7 @@ public class Produit {
     @Override
     public String toString() {
         return "Produit [idP=" + idP + ", nom=" + nom + ", poids=" + poids + ", ig=" + ig + ", bio=" + bio
-                + ", origine=" + origine + ", idC=" + idC + ", idA=" + idA + ", NbRecherche=" + nbRecherche + "]";
+                + ", origine=" + origine + ", idC=" + idC + ", idA=" + idA + ", NbRecherche=" + nbRecherche + "]" + "empreinteCarb" + empreinteC;
     }
 
     public int getNbRecherche() {

@@ -9,6 +9,7 @@ import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
+import edu.ezip.ing1.pds.requests.DeleteProduitClientRequest;
 import edu.ezip.ing1.pds.requests.InsertStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectStudentNomClientRequest;
@@ -31,6 +32,7 @@ public class ProduitService {
     //private final static String produitsToBeInserted = "produits-to-be-inserted.yaml";
 
     final String insertRequestOrder = "INSERT_PRODUIT";
+    final String deleteOrder="DELETE_PRODUIT";
     final String selectRequestOrder = "SELECT_ALL_PRODUITS";
     final String selectNomRequestOrder = "SELECT_PRODUIT_NOM";
     final String updateRequestOrder="UPDATE_PRODUIT_NBRECHERCHE";
@@ -166,6 +168,56 @@ public class ProduitService {
                     clientRequest2.getResult());
         }
     }
+
+
+
+
+public void deleteProduit() throws InterruptedException, IOException {
+    final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
+    Produit prod = new Produit();
+
+    String nom;
+    while (true) {
+        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à supprimer");
+        if (nom != null && !nom.trim().isEmpty()) {
+            break;
+        }
+        JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
+    }
+    prod.setNom(nom);
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final String jsonifiedProduit = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(prod);
+    logger.trace("Produit à supprimer (JSON) : {}", jsonifiedProduit);
+
+    final String requestId = UUID.randomUUID().toString();
+    final Request request = new Request();
+    request.setRequestId(requestId);
+    request.setRequestOrder(deleteOrder); 
+    request.setRequestContent(jsonifiedProduit);
+    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+
+    final DeleteProduitClientRequest clientRequest = new DeleteProduitClientRequest(
+            networkConfig, 0, request, prod, requestBytes);
+    clientRequests.push(clientRequest);
+
+    while (!clientRequests.isEmpty()) {
+        final ClientRequest clientRequest2 = clientRequests.pop();
+        clientRequest2.join(); 
+        final Produit deletedProd = (Produit) clientRequest2.getInfo();
+        logger.debug("Thread {} terminé : suppression du produit '{}' --> {}",
+                clientRequest2.getThreadName(),
+                deletedProd.getNom(),
+                clientRequest2.getResult());
+    }
+}
+
+
+
+
+
+
 
     public Produits selectProduits() throws InterruptedException, IOException {
         int birthdate = 0;
