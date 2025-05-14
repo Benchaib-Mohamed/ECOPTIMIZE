@@ -51,7 +51,7 @@ public class FenetreUser extends JFrame implements ActionListener {
                     new FenetreAlt();
                 }
                 if(e.getSource() == boutonStat){
-                    new FenetreStat();
+                    new FenetreStat2();
                 }
                 
                 
