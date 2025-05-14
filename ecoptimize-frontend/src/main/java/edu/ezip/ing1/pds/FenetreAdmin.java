@@ -10,6 +10,8 @@ public class FenetreAdmin extends JFrame implements ActionListener {
     
     
     JButton boutonInser = new JButton("➕ Inserer un produit dans la base de données");
+    JButton boutonSuppr = new JButton("➖ Supprimer un produit de la base de données");
+
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
     JPanel reste = new JPanel();
@@ -22,6 +24,7 @@ public class FenetreAdmin extends JFrame implements ActionListener {
         message.setPreferredSize(new Dimension(50,150));
         
         boutonInser.addActionListener(this);
+        boutonSuppr.addActionListener(this);
         //this.getContentPane().setBackground(Color.BLACK);
         this.getContentPane().add(BorderLayout.NORTH, titre);
         titre.setLayout(new BorderLayout());
@@ -33,8 +36,10 @@ public class FenetreAdmin extends JFrame implements ActionListener {
         titre.add(message);
         
         boutonInser.setPreferredSize(new Dimension(350,350));
+        boutonSuppr.setPreferredSize(new Dimension(350,350));
         
         reste.add(boutonInser);
+        reste.add(boutonSuppr);
         this.getContentPane().add(BorderLayout.CENTER, reste);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +51,9 @@ public class FenetreAdmin extends JFrame implements ActionListener {
                 
                 if(e.getSource() == boutonInser){
                     new FenetreInser();
+                }
+                if(e.getSource() == boutonSuppr){
+                    new FenetreSuppr();
                 }
                 
             }catch(IOException ex){

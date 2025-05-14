@@ -9,6 +9,7 @@ import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
+import edu.ezip.ing1.pds.requests.DeleteProduitClientRequest;
 import edu.ezip.ing1.pds.requests.InsertStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
 import edu.ezip.ing1.pds.requests.SelectStudentNomClientRequest;
@@ -23,6 +24,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.UUID;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 public class ProduitService {
@@ -31,6 +33,7 @@ public class ProduitService {
     //private final static String produitsToBeInserted = "produits-to-be-inserted.yaml";
 
     final String insertRequestOrder = "INSERT_PRODUIT";
+    final String deleteOrder="DELETE_PRODUIT";
     final String selectRequestOrder = "SELECT_ALL_PRODUITS";
     final String selectNomRequestOrder = "SELECT_PRODUIT_NOM";
     final String updateRequestOrder="UPDATE_PRODUIT_NBRECHERCHE";
@@ -43,129 +46,168 @@ public class ProduitService {
     }
 
     public void insertProduits() throws InterruptedException, IOException {
-        
+    final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
+    Produit prod = new Produit();
 
-
-        final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
-        Produit prod = new Produit();
-
-        int idP;
-        while (true) {
-            try {
-                idP = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'id du produit (non existant)"));
-                break; 
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'id du produit.");
-            }
-        }
-        prod.setIdP(idP);
-
-       
-        String nom;
-        while (true) {
-            nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à insérer");
-            if (nom != null && !nom.trim().isEmpty()) { //trim() pour suppr les espaces et refuser les espaces comme seuls carac
-                break; 
-            }
-            JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
-        }
-        prod.setNom(nom);
-
-        
-        int poids;
-        while (true) {
-            try {
-                poids = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer le poids du produit (par unité en g)"));
-                break;
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour le poids.");
-            }
-        }
-        prod.setPoids(poids);
-
-        
-        int ig;
-        while (true) {
-            try {
-                ig = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'indice glycémique du produit"));
-                break;
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'indice glycémique.");
-            }
-        }
-        prod.setIg(ig);
-
-       
-        boolean bio;
-        while (true) {
-            String bioInput = JOptionPane.showInputDialog("Ce produit est-il bio (true/false) ?");
-            if (bioInput.equalsIgnoreCase("true") || bioInput.equalsIgnoreCase("false")) {
-                bio = Boolean.parseBoolean(bioInput);
-                break;
-            }
-            JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer 'true' ou 'false'.");
-        }
-        prod.setBio(bio);
-
-        
-        String origine;
-        while (true) {
-            origine = JOptionPane.showInputDialog("Veuillez entrer l'origine du produit");
-            if (origine != null && !origine.trim().isEmpty()) {
-                break;
-            }
-            JOptionPane.showMessageDialog(null, "Erreur : L'origine du produit ne peut pas être vide.");
-        }
-        prod.setOrigine(origine);
-
-        
-        int cate;
-        while (true) {
-            try {
-                cate = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'id de la catégorie du produit (1=Gâteau, 2=Boisson)"));
-                if (cate == 1 || cate == 2) {
-                    break;
-                } else {
-                    JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer 1 pour Gâteau ou 2 pour Boisson.");
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide (1 ou 2) pour la catégorie.");
-            }
-        }
-       
-
-        prod.setIdC(cate);
-        prod.setIdA(cate);
-        prod.setNbRecherche(0);
-        int birthdate = 0;
-        
-            final ObjectMapper objectMapper = new ObjectMapper();
-            final String jsonifiedGuy = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(prod);
-            logger.trace("Student with its JSON face : {}", jsonifiedGuy);
-            final String requestId = UUID.randomUUID().toString();
-            final Request request = new Request();
-            request.setRequestId(requestId);
-            request.setRequestOrder(insertRequestOrder);
-            request.setRequestContent(jsonifiedGuy);
-            objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
-            final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
-
-            final InsertStudentsClientRequest clientRequest = new InsertStudentsClientRequest(
-                    networkConfig,
-                    birthdate++, request, prod, requestBytes);
-            clientRequests.push(clientRequest);
-        
-
-        while (!clientRequests.isEmpty()) {
-            final ClientRequest clientRequest2 = clientRequests.pop();
-            clientRequest.join();
-            final Produit prod2 = (Produit)clientRequest.getInfo();
-            logger.debug("Thread {} complete : {} {} {} {} {} {} {} {} {} --> {}",
-                    clientRequest2.getThreadName(),
-                    prod2.getIdP(), prod2.getNom(), prod2.getPoids(), prod2.getIg(), prod2.getBio(), prod2.getOrigine() ,prod2.getIdC(), prod2.getIdA(),prod2.getNbRecherche(),
-                    clientRequest2.getResult());
+    int idP;
+    while (true) {
+        try {
+            idP = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'id du produit (non existant)"));
+            break;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'id du produit.");
         }
     }
+    prod.setIdP(idP);
+
+    String nom;
+    while (true) {
+        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à insérer");
+        if (nom != null && !nom.trim().isEmpty()) {
+            break;
+        }
+        JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
+    }
+    prod.setNom(nom);
+
+    int poids;
+    while (true) {
+        try {
+            poids = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer le poids du produit (par unité en g)"));
+            break;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour le poids.");
+        }
+    }
+    prod.setPoids(poids);
+
+    int ig;
+    while (true) {
+        try {
+            ig = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'indice glycémique du produit"));
+            break;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'indice glycémique.");
+        }
+    }
+    prod.setIg(ig);
+
+    String[] bioOptions = {"Oui", "Non"};
+    JComboBox<String> bioBox = new JComboBox<>(bioOptions);
+    int bioResult = JOptionPane.showConfirmDialog(null, bioBox, "Ce produit est-il bio ?", JOptionPane.OK_CANCEL_OPTION);
+    boolean bio;
+    if (bioResult == JOptionPane.OK_OPTION) {
+        String selectedBio = (String) bioBox.getSelectedItem();
+        bio = selectedBio.equals("Oui");
+    } else {
+        JOptionPane.showMessageDialog(null, "Opération annulée.");
+        return;
+}
+prod.setBio(bio);
+
+    String origine;
+    while (true) {
+        origine = JOptionPane.showInputDialog("Veuillez entrer l'origine du produit");
+        if (origine != null && !origine.trim().isEmpty()) {
+            break;
+        }
+        JOptionPane.showMessageDialog(null, "Erreur : L'origine du produit ne peut pas être vide.");
+    }
+    prod.setOrigine(origine);
+
+    
+    String[] categories = {"Gâteau", "Boisson"};
+    JComboBox<String> comboBox = new JComboBox<>(categories);
+    int result = JOptionPane.showConfirmDialog(null, comboBox, "Choisissez la catégorie du produit", JOptionPane.OK_CANCEL_OPTION);
+    int cate;
+    if (result == JOptionPane.OK_OPTION) {
+        String selected = (String) comboBox.getSelectedItem();
+        cate = selected.equals("Gâteau") ? 1 : 2;
+    } else {
+        JOptionPane.showMessageDialog(null, "Opération annulée.");
+        return; 
+    }
+
+    prod.setIdC(cate);
+    prod.setIdA(cate);
+    prod.setNbRecherche(0);
+    int birthdate = 0;
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final String jsonifiedGuy = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(prod);
+    logger.trace("Student with its JSON face : {}", jsonifiedGuy);
+    final String requestId = UUID.randomUUID().toString();
+    final Request request = new Request();
+    request.setRequestId(requestId);
+    request.setRequestOrder(insertRequestOrder);
+    request.setRequestContent(jsonifiedGuy);
+    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+
+    final InsertStudentsClientRequest clientRequest = new InsertStudentsClientRequest(
+            networkConfig,
+            birthdate++, request, prod, requestBytes);
+    clientRequests.push(clientRequest);
+
+    while (!clientRequests.isEmpty()) {
+        final ClientRequest clientRequest2 = clientRequests.pop();
+        clientRequest.join();
+        final Produit prod2 = (Produit) clientRequest.getInfo();
+        logger.debug("Thread {} complete : {} {} {} {} {} {} {} {} {} --> {}",
+                clientRequest2.getThreadName(),
+                prod2.getIdP(), prod2.getNom(), prod2.getPoids(), prod2.getIg(), prod2.getBio(), prod2.getOrigine(), prod2.getIdC(), prod2.getIdA(), prod2.getNbRecherche(),
+                clientRequest2.getResult());
+    }
+}
+
+
+
+public void deleteProduit() throws InterruptedException, IOException {
+    final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
+    Produit prod = new Produit();
+
+    String nom;
+    while (true) {
+        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à supprimer");
+        if (nom != null && !nom.trim().isEmpty()) {
+            break;
+        }
+        JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
+    }
+    prod.setNom(nom);
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    final String jsonifiedProduit = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(prod);
+    logger.trace("Produit à supprimer (JSON) : {}", jsonifiedProduit);
+
+    final String requestId = UUID.randomUUID().toString();
+    final Request request = new Request();
+    request.setRequestId(requestId);
+    request.setRequestOrder(deleteOrder); 
+    request.setRequestContent(jsonifiedProduit);
+    objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+    final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+
+    final DeleteProduitClientRequest clientRequest = new DeleteProduitClientRequest(
+            networkConfig, 0, request, prod, requestBytes);
+    clientRequests.push(clientRequest);
+
+    while (!clientRequests.isEmpty()) {
+        final ClientRequest clientRequest2 = clientRequests.pop();
+        clientRequest2.join(); 
+        final Produit deletedProd = (Produit) clientRequest2.getInfo();
+        logger.debug("Thread {} terminé : suppression du produit '{}' --> {}",
+                clientRequest2.getThreadName(),
+                deletedProd.getNom(),
+                clientRequest2.getResult());
+    }
+}
+
+
+
+
+
+
 
     public Produits selectProduits() throws InterruptedException, IOException {
         int birthdate = 0;
