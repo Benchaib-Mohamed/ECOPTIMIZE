@@ -10,7 +10,14 @@ PATH_BACK="/Users/mohamedbenchaib/Documents/GitHub/ECOPTIMIZE/ecoptimize-backend
 
 scp -r $PATH_BACK $USER@$IP:"/home/toto/sirius/backend"
 # connexion à la vm back et lancement du serveur 
-sshpass -p "$PWD" ssh $USER@$IP "java -jar $PATH_BACK_VM"
+sshpass -p "$PWD" ssh $USER@$IP  "
+  PID=\$(ps -ef | grep '$PATH_BACK_VM' | grep -v grep | awk '{print \$2}')
+  if [ ! -z \"\$PID\" ]; then
+    kill \$PID
+    sleep 1
+  fi
+  java -jar $PATH_BACK_VM
+"
 
 
 

@@ -16,11 +16,14 @@ public class Request {
     private String requestBody;
 
     private String nom;
+
     private int idC;
 
     
 
-    
+    public void setRequestBody(String requestBody) {
+        this.requestBody = requestBody;
+    }
 
     public int getIdC() {
         return idC;

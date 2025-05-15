@@ -127,13 +127,29 @@ prod.setBio(bio);
     prod.setOrigine(origine);
 
     
-    String[] categories = {"Gâteau", "Boisson"};
+    String[] categories = {"Gâteau", "Boisson", "Bonbon","Snack"};
     JComboBox<String> comboBox = new JComboBox<>(categories);
     int result = JOptionPane.showConfirmDialog(null, comboBox, "Choisissez la catégorie du produit", JOptionPane.OK_CANCEL_OPTION);
     int cate;
     if (result == JOptionPane.OK_OPTION) {
         String selected = (String) comboBox.getSelectedItem();
-        cate = selected.equals("Gâteau") ? 1 : 2;
+        switch (selected) {
+            case "Gâteau":
+                cate = 1;
+                break;
+            case "Boisson":
+                cate = 2;
+                break;
+            case "Bonbon":
+                cate = 3;
+                break;
+            case "Snack":
+                cate = 4;
+                break;
+            default:
+                JOptionPane.showMessageDialog(null, "Catégorie invalide.");
+            return;
+    }
     } else {
         JOptionPane.showMessageDialog(null, "Opération annulée.");
         return; 

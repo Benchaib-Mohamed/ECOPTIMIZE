@@ -24,13 +24,13 @@ public class EcoptimizeService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche ,t.EmpreinteC FROM produits t WHERE idC=?"),
+        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche, t.EmpreinteC FROM produits t WHERE idC=?"),
         DELETE_PRODUIT("DELETE FROM produits WHERE Nom = ?"),
-        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche, EmpreinteC) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,? )"),
+        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche, EmpreinteC) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche, t.EmpreinteC FROM produits t WHERE t.Nom = ?");
-        SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
+        SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
         UPDATE_PRODUIT_NBRECHERCHE("UPDATE produits SET NbRecherche = ? WHERE Nom = ?"),
-        SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche , t.EmpreinteC FROM produits t WHERE t.Nom=?");
+        SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche ,t.EmpreinteC FROM produits t WHERE t.Nom=?");
         private final String query;
 
         private Queries(final String query) {
