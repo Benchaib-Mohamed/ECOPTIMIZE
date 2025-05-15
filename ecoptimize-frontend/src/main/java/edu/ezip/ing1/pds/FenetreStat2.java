@@ -98,6 +98,16 @@ public class FenetreStat2 extends JFrame implements ActionListener{
 
 
        }
-
+    else if(e.getSource().equals(B1)){
+        try {
+            new FenetreBoisson();
+        } catch (InterruptedException e1) {
+            
+            e1.printStackTrace();
+        } catch (IOException e1) {
+          
+            e1.printStackTrace();
+        }
+    }
     }
 }
