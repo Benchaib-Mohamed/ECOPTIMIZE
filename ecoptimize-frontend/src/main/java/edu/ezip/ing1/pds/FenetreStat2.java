@@ -45,7 +45,7 @@ public class FenetreStat2 extends JFrame implements ActionListener{
        
         B=new JButton("Gateaux");
         JPanel P=new JPanel();
-        P.setLayout(new GridLayout(1,1));
+        P.setLayout(new GridLayout(2,2));
         
         B1=new JButton("Boissons"+ " 🧉");
          B2=new JButton("🔍");
@@ -66,15 +66,30 @@ public class FenetreStat2 extends JFrame implements ActionListener{
         B2.setBackground(grisClair);
         B2.setForeground(Color.DARK_GRAY);
         B2.setFocusPainted(false);
+
+        B3.setBackground(vertMenthe);
+        B3.setForeground(Color.WHITE);
+        B3.setFocusPainted(false);
+
+        B4.setBackground(bleuPastel);
+        B4.setForeground(Color.BLACK);
+        B4.setFocusPainted(false);
+
+
+
        
         P.add(B);
         P.add(B1);
+        P.add(B3);
+        P.add(B4);
         getContentPane().add(B2, BorderLayout.NORTH);
         getContentPane().add(P, BorderLayout.CENTER);
         
         B2.addActionListener(this);
         B1.addActionListener(this);
         B.addActionListener(this);
+        B3.addActionListener(this);
+        B4.addActionListener(this);
         this.setVisible(true);
 
     }
