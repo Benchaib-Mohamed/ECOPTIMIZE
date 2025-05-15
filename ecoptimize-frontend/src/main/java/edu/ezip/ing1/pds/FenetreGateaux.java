@@ -44,10 +44,11 @@ public class FenetreGateaux extends JFrame {
         P.setLayout(new BoxLayout(P, BoxLayout.Y_AXIS));
         Produits Pr=produitS.selectProduits(1);
         ProduitList=new ArrayList<>(Pr.getProduits());
+        ProduitList.sort((p1,p2) -> Integer.compare(noteGateau(p2), noteGateau(p1)));
         for(int i=0;i<ProduitList.size();i++){
             JPanel Ligne=new JPanel();
             Ligne.setLayout(new BorderLayout());
-            JLabel Nom=new JLabel(ProduitList.get(i).getNom());
+            JLabel Nom=new JLabel(ProduitList.get(i).getNom()+ motifG(ProduitList.get(i)));
             JButton info=new JButton("❔");
             Ligne.add(Nom,BorderLayout.CENTER);
             Ligne.add(info,BorderLayout.EAST);
@@ -74,6 +75,46 @@ public class FenetreGateaux extends JFrame {
 
     }
     
-    
-    
+    public  int noteGateau(Produit P){
+        
+        int noteE;
+        int noteig;
+        int notebio;
+        
+        int noteG;
+        
+        if(P.getIg()<40){
+            noteig=12;
+        }
+        else if(40>=P.getIg() || P.getIg()<=60){
+            noteig=8;
+        }
+        else{
+            noteig=5;
+        }
+        if(P.getBio()==true){
+            notebio=3;
+        }
+        else{ notebio=0;}
+        if(P.getEmpreinteC()<50 ){
+            noteE=3;
+        }
+        else if (P.getEmpreinteC()>=50 && P.getEmpreinteC()<90){
+            noteE=2;
+        }
+        else { noteE=1;}
+        noteG=noteE+noteig+notebio;
+        return noteG;
 }
+    public String motifG(Produit P){
+        if (noteGateau(P)>=15){
+            return "🟢";
+        }
+        else if(noteGateau(P)<10){
+            return "🔴";
+        }
+        else return "🟠";
+    }
+}
+
+
