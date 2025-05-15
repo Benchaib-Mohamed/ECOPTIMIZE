@@ -35,6 +35,8 @@ public class FenetreStat2 extends JFrame implements ActionListener{
     JButton B;
     JButton B1;
     JButton B2;
+    JButton B3;
+    JButton B4;
     public FenetreStat2(){
         this.setTitle("Fenetre Stat");
         this.setSize(600,600);
@@ -45,9 +47,10 @@ public class FenetreStat2 extends JFrame implements ActionListener{
         JPanel P=new JPanel();
         P.setLayout(new GridLayout(1,1));
         
-        B1=new JButton("Boissons");
+        B1=new JButton("Boissons"+ " 🧉");
          B2=new JButton("🔍");
-       
+        B3=new JButton("Bonbons 🍬");
+        B4=new JButton("Snack 🍿");
          Color bleuPastel = new Color(100, 149, 237);
         Color vertMenthe = new Color(152, 251, 152);
         Color grisClair = new Color(230, 230, 250);
