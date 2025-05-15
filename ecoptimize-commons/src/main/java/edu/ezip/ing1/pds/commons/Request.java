@@ -16,8 +16,19 @@ public class Request {
     private String requestBody;
 
     private String nom;
+    private int idC;
 
     
+
+    
+
+    public int getIdC() {
+        return idC;
+    }
+
+    public void setIdC(int idC) {
+        this.idC = idC;
+    }
 
     public String getNom() {
         return nom;

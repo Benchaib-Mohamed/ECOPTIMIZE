@@ -42,7 +42,7 @@ public class FenetreGateaux extends JFrame {
     
         JPanel P=new JPanel();
         P.setLayout(new BoxLayout(P, BoxLayout.Y_AXIS));
-        Produits Pr=produitS.selectProduits();
+        Produits Pr=produitS.selectProduits(1);
         ProduitList=new ArrayList<>(Pr.getProduits());
         for(int i=0;i<ProduitList.size();i++){
             JPanel Ligne=new JPanel();
@@ -53,56 +53,23 @@ public class FenetreGateaux extends JFrame {
             Ligne.add(info,BorderLayout.EAST);
             P.add(Ligne);
             info.addActionListener(e-> {
-                try {
-                    produitS.selectProduitPrincipalSansUpdate(Nom.getText());
-                    if (P != null) {
-               JPanel P2 = new JPanel(new BorderLayout());
-                JLabel nom = new JLabel(P.getNom());
-                nom.setFont(new Font("Arial", Font.BOLD, 35));
-                nom.setOpaque(true);  
-                nom.setBackground(new Color(204, 255, 204));
-                nom.setHorizontalAlignment(JLabel.CENTER);
-                P2.add(Nom, BorderLayout.NORTH);
-    
-                JPanel P3 = new JPanel(new GridLayout(5, 2)); 
-                P3.setBackground(new Color(245, 245, 245));
-    
-                P3.add(createLabel("Nombre de recherches d'alt effectuées :"));
-                P3.add(createValueLabel(String.valueOf(P.getNbRecherche())));
-                P3.add(createLabel("BIO:"));
-            if(P.getBio()==true){    
-                P3.add(createValueLabel(String.valueOf("✅")));}
-                else{P3.add(createValueLabel("❌"));}
-                P3.add(createLabel("Indice glycémique du produit:"));
-             if(P.getIg()<40) {  P3.add(createValueLabel(String.valueOf(P.getIg()+" 🟢")));}
-            else if(40>=P.getIg() || P.getIg()<=60){P3.add(createValueLabel(String.valueOf(P.getIg()+ "🟠")));}
-            else if(P.getIg()>60){P3.add(createValueLabel(String.valueOf(P.getIg()+" 🔴")));}
-             
-                P3.add(createLabel("Origine du produit:"));
-         
-                if(P.getOrigine().equals("France"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🐓"));}
-                else if(P.getOrigine().equals("Etats Unis"))   {    P3.add(createValueLabel(P.getOrigine()+ " 🦅"));}
-                else{P3.add(createValueLabel(P.getOrigine()));}
-                P3.add(createLabel("Empreinte Carbonne du produit "));
-                if(P.getEmpreinteC()>=20){ P3.add(createValueLabel(P.getEmpreinteC() + "🔴"));}
-                else if(P.getEmpreinteC()<20 && P.getEmpreinteC()>=10){P3.add(createValueLabel(P.getEmpreinteC()+"🟠"));}
-                else { P3.add(createValueLabel(P.getEmpreinteC()+"🟢"));}
-
-                }} catch (InterruptedException e1) {
-                    
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    
-                    e1.printStackTrace();
-                }
+               try {
+                new FenetreInfo(Nom.getText());
+               } catch (InterruptedException e1) {
+                
+                e1.printStackTrace();
+               } catch (IOException e1) {
+                
+                e1.printStackTrace();
+               }
 
             });
             
 
 
         }
-
-
+             getContentPane().add(P,BorderLayout.CENTER);
+             this.setVisible(true);
 
 
     }

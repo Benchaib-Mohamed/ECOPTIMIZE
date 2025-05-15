@@ -24,10 +24,10 @@ public class EcoptimizeService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t"),
+        SELECT_ALL_PRODUITS("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE idC=?"),
         DELETE_PRODUIT("DELETE FROM produits WHERE Nom = ?"),
-        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"),
-        //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche FROM produits t WHERE t.Nom = ?");
+        INSERT_PRODUIT("INSERT INTO produits (idP, nom, poids, ig, bio, origine, idC, idA, NbRecherche, EmpreinteC) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,? )"),
+        //SELECT_PRODUIT_NOM("SELECT t.IdP, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, t.IdC, t.IdA, t.NbRecherche, t.EmpreinteC FROM produits t WHERE t.Nom = ?");
         SELECT_PRODUIT_NOM("SELECT t.IdA, t.Nom, t.Poids, t.IG, t.Bio, t.Origine, 0, 0, 0 FROM aleternatives t, produits p WHERE p.Nom = ? AND p.IdA = t.IdA"),
         UPDATE_PRODUIT_NBRECHERCHE("UPDATE produits SET NbRecherche = ? WHERE Nom = ?"),
         SELECT_PRODUIT_NOMP("SELECT t.IdP,t.Nom,t.Poids,t.IG,t.Bio,t.Origine,t.IdC ,t.IdA ,t.NbRecherche , t.EmpreinteC FROM produits t WHERE t.Nom=?");
@@ -54,11 +54,12 @@ public class EcoptimizeService {
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
         String s=request.getNom();
+        int i=request.getIdC();
 
         final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());//request.get... =ordre de requete qui est recu de ProduitService
         switch(queryEnum) {
             case SELECT_ALL_PRODUITS:
-                response = SelectAllProduits(request, connection);
+                response = SelectAllProduits(request, connection,i);
                 break;
             case DELETE_PRODUIT:
                 DeleteProduitNom(request, connection);
@@ -103,16 +104,20 @@ public class EcoptimizeService {
         stmnt.setInt(7, produit.getIdC()); 
         stmnt.setInt(8, produit.getIdA());  
         stmnt.setInt(9, produit.getNbRecherche());
+        stmnt.setInt(10,produit.getEmpreinteC());
         stmnt.executeUpdate();  
         
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(produit));
     }
     
 
-    private Response SelectAllProduits(final Request request, final Connection connection) throws SQLException, JsonProcessingException {
+    private Response SelectAllProduits(final Request request, final Connection connection,int i) throws SQLException, JsonProcessingException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        final Statement stmt = connection.createStatement();
+        final PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_ALL_PRODUITS.query);
+        stmt.setInt(1, i);
+        
         final ResultSet res = stmt.executeQuery(Queries.SELECT_ALL_PRODUITS.query);
+
         Produits produits = new Produits();
     
         while (res.next()) {
@@ -128,6 +133,7 @@ public class EcoptimizeService {
             produit.setIdC(res.getInt(7));  
             produit.setIdA(res.getInt(8)); 
             produit.setNbRecherche(res.getInt(9));
+            produit.setEmpreinteC(res.getInt(10));
     
             produits.add(produit);
         }

@@ -82,7 +82,15 @@ public class FenetreStat2 extends JFrame implements ActionListener{
         new FenetreStat();
        }
        else if(e.getSource().equals(B)){
-        new FenetreGateaux();
+        try {
+            new FenetreGateaux();
+        } catch (InterruptedException e1) {
+            
+            e1.printStackTrace();
+        } catch (IOException e1) {
+           
+            e1.printStackTrace();
+        }
         
         
 

@@ -92,6 +92,17 @@ public class ProduitService {
     }
     prod.setIg(ig);
 
+    int EmpreinteC;
+    while (true) {
+        try {
+            EmpreinteC = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'Empreinte carbonne du produit "));
+            break;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour le poids.");
+        }
+    }
+    prod.setEmpreinteC(EmpreinteC);
+
     String[] bioOptions = {"Oui", "Non"};
     JComboBox<String> bioBox = new JComboBox<>(bioOptions);
     int bioResult = JOptionPane.showConfirmDialog(null, bioBox, "Ce produit est-il bio ?", JOptionPane.OK_CANCEL_OPTION);
@@ -131,6 +142,7 @@ prod.setBio(bio);
     prod.setIdC(cate);
     prod.setIdA(cate);
     prod.setNbRecherche(0);
+    
     int birthdate = 0;
 
     final ObjectMapper objectMapper = new ObjectMapper();
@@ -155,7 +167,7 @@ prod.setBio(bio);
         final Produit prod2 = (Produit) clientRequest.getInfo();
         logger.debug("Thread {} complete : {} {} {} {} {} {} {} {} {} --> {}",
                 clientRequest2.getThreadName(),
-                prod2.getIdP(), prod2.getNom(), prod2.getPoids(), prod2.getIg(), prod2.getBio(), prod2.getOrigine(), prod2.getIdC(), prod2.getIdA(), prod2.getNbRecherche(),
+                prod2.getIdP(), prod2.getNom(), prod2.getPoids(), prod2.getIg(), prod2.getBio(), prod2.getOrigine(), prod2.getIdC(), prod2.getIdA(), prod2.getNbRecherche(),prod2.getEmpreinteC(),
                 clientRequest2.getResult());
     }
 }
@@ -209,14 +221,17 @@ public void deleteProduit() throws InterruptedException, IOException {
 
 
 
-    public Produits selectProduits() throws InterruptedException, IOException {
+    public Produits selectProduits(int i) throws InterruptedException, IOException {
         int birthdate = 0;
         final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
         final ObjectMapper objectMapper = new ObjectMapper();
         final String requestId = UUID.randomUUID().toString();
         final Request request = new Request();
+        
         request.setRequestId(requestId);
         request.setRequestOrder(selectRequestOrder);
+        request.setIdC(i);
+
         objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
