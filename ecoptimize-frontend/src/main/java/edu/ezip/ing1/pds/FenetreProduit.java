@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,8 +27,8 @@ import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.ProduitService;
 
-public class FenetreGateaux extends JFrame {
-     private final static String LoggingLabel = "FrontEnd";
+public class FenetreProduit extends JFrame implements ActionListener{
+         private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
     private static final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
@@ -35,27 +36,59 @@ public class FenetreGateaux extends JFrame {
    
     final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
     final ProduitService produitS = new ProduitService(networkConfig);
-    public FenetreGateaux() throws InterruptedException, IOException{
+    JButton preced;
+
+    public FenetreProduit(int idC)  throws InterruptedException, IOException {
         setSize(600,600);
-        setTitle("Fenetre Gateaux");
+        JLabel Jl=new JLabel();
+        switch (idC){
+          case 1: setTitle("Fenetre Gateaux");
+        Jl.setText("Voici la liste de tous les gateaux disponibles , du plus sain au moins saine");
+        break;
+        case 2:  setTitle("Fenetre Boisson");
+        
+        Jl.setText("Voici la liste de toutes les boissons disponibles , de la plus saine a la moins saine");
+        break;
+        case 3: setTitle("Fenetre Bonbons");
+        Jl.setText("Voici la liste de toutes les bonbons disponibles , du plus sain au moins sain");
+        break;
+        case 4: setTitle("Fenetre Snack");
+        Jl.setText("Voici la liste de toutes les snacks disponibles , du plus sain au moins sain");
+        break;
+        
+        
+           
+        }
+        
+       
+        
+        
+        
         setLocationRelativeTo(null);
         getContentPane().setBackground(new Color(245, 245, 250));
 
-        JLabel Jl=new JLabel("Voici la liste de tout les gateaux disponible , du plus sain au moins sain");
+        
         Jl.setForeground(new Color(33, 33, 33));
         getContentPane().add(Jl,BorderLayout.NORTH);
     
         JPanel P=new JPanel();
         P.setLayout(new BoxLayout(P, BoxLayout.Y_AXIS));
         P.setBackground(new Color(245, 245, 250));
-        Produits Pr=produitS.selectProduits(1);
+
+        preced=new JButton("⬅️");
+
+        
+        System.out.println(idC);
+        Produits Pr=produitS.selectProduits(idC);
         ProduitList=new ArrayList<>(Pr.getProduits());
         ProduitList.sort((p1,p2) -> Integer.compare(noteGateau(p2), noteGateau(p1)));
-        for(int i=0;i<ProduitList.size();i++){
+       
+        for(int  i=0;i<ProduitList.size();i++){
             Produit p=ProduitList.get(i);
             JPanel Ligne=new JPanel();
             Ligne.setLayout(new BorderLayout());
             Ligne.setBackground(new Color(230, 240, 255));
+            Ligne.setBorder(BorderFactory.createLineBorder(new Color(100, 100, 160), 1));
             JLabel Nom=new JLabel(ProduitList.get(i).getNom().toUpperCase()+ " "+ motifG(ProduitList.get(i))+" "+noteGateau(ProduitList.get(i))+"/20");
             Nom.setFont(new Font("SansSerif", Font.BOLD, 16));
 
@@ -82,7 +115,9 @@ public class FenetreGateaux extends JFrame {
 
 
         }
-             getContentPane().add(P,BorderLayout.CENTER);
+            preced.addActionListener(this);
+        getContentPane().add(P,BorderLayout.CENTER);
+             getContentPane().add(preced,BorderLayout.SOUTH);
              this.setVisible(true);
 
 
@@ -128,6 +163,21 @@ public class FenetreGateaux extends JFrame {
         }
         else return "🟠";
     }
+
+    
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(preced)){
+            setVisible(false);
+            new FenetreStat2();
+        }
+        
+        
+    }
 }
 
+    
+     
+
+
+    
 

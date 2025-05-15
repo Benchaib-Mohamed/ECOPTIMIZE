@@ -96,12 +96,13 @@ public class FenetreStat2 extends JFrame implements ActionListener{
     
     public void actionPerformed(ActionEvent e) {
        if(e.getSource().equals(B2)){
-        this.setVisible(false);
+        dispose();
         new FenetreStat();
        }
        else if(e.getSource().equals(B)){
         try {
-            new FenetreGateaux();
+            
+            new FenetreProduit(1);
         } catch (InterruptedException e1) {
             
             e1.printStackTrace();
@@ -118,7 +119,7 @@ public class FenetreStat2 extends JFrame implements ActionListener{
        }
     else if(e.getSource().equals(B1)){
         try {
-            new FenetreBoisson();
+            new FenetreProduit(2);
         } catch (InterruptedException e1) {
             
             e1.printStackTrace();
@@ -127,5 +128,27 @@ public class FenetreStat2 extends JFrame implements ActionListener{
             e1.printStackTrace();
         }
     }
+    else if(e.getSource().equals(B3)){
+        try {
+            new FenetreProduit(3);
+        } catch (InterruptedException e1) {
+            
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            
+            e1.printStackTrace();
+        }
     }
+    else if(e.getSource().equals(B4)){
+        try {
+            new FenetreProduit(4);
+        } catch (InterruptedException e1) {
+            
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            
+            e1.printStackTrace();
+        }
+    }
+}
 }
