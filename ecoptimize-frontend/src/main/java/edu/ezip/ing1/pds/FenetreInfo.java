@@ -82,8 +82,12 @@ public class FenetreInfo extends JFrame{
                 P2.add(P3, BorderLayout.CENTER);
                 this.getContentPane().add(P2,BorderLayout.CENTER);
                 this.setVisible(true);
-    }
-}
+            }
+
+        else{JOptionPane.showMessageDialog(this, "Produit non trouver");}
+
+
+        }
  private JLabel createLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
