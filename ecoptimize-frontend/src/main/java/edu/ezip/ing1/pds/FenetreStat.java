@@ -1,5 +1,7 @@
+
 package edu.ezip.ing1.pds;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -39,40 +41,41 @@ public class FenetreStat extends JFrame implements ActionListener{
     CardLayout C=new CardLayout();
     
     
-    
-    
-    
-    
-    public FenetreStat(){
-        setTitle("Information");
-        setSize(600,600);
-        setLocationRelativeTo(null);
-        Panels=new JPanel(C);
-        JPanel P1=new JPanel(new GridLayout(3,1,10,10));
-        P1.setBackground(new Color(245,245,245));
-        
-        Panels.add(P1, "FirstPanel");
-       
-        JLabel SP=new JLabel("Selectionner votre produit");
-        SP.setFont(new Font("Arial", Font.BOLD, 18));
-        SP.setOpaque(true);  
-        SP.setBackground(new Color(204, 255, 204));
-        JButton B1=new JButton("Valider");
-        B1.setFont(new Font("Arial", Font.BOLD, 16));
-        F.setFont(new Font("Arial", Font.PLAIN, 16));
+   public FenetreStat() {
+    setTitle("Moteur de recherche");
+    setSize(600, 600);
+    setLocationRelativeTo(null);
+    setLayout(null);
 
-        P1.add(SP);
-        P1.add(F);
-        P1.add(B1);
-        B1.addActionListener(this);
-        add(Panels);
-        setVisible(true);
-       
-        
+    Panels = new JPanel(null);
+    Panels.setBounds(0, 0, 600, 600);
+    Panels.setBackground(new Color(173, 216, 230));
+    add(Panels);
 
+    JLabel iconLabel = new JLabel(new ImageIcon("ecoptimize-frontend\\src\\main\\resources\\search.png")); 
+    iconLabel.setBounds(200, 50, 200, 200);
+    Panels.add(iconLabel);
 
+    JLabel SP = new JLabel("Rechercher un produit");
+    SP.setFont(new Font("Arial", Font.BOLD, 18));
+    SP.setBounds(200, 230, 300, 30);
+    Panels.add(SP);
 
-    }
+    F = new JTextField();
+    F.setFont(new Font("Arial", Font.PLAIN, 16));
+    F.setBounds(180, 280, 250, 35);
+    Panels.add(F);
+
+    JButton B1 = new JButton("Valider");
+    B1.setFont(new Font("Arial", Font.BOLD, 16));
+    B1.setBounds(250, 340, 100, 40);
+    Panels.add(B1);
+
+    B1.addActionListener(this);
+
+    setVisible(true);
+}
+    
     
     public void actionPerformed(ActionEvent e)  {
      String s = F.getText();
