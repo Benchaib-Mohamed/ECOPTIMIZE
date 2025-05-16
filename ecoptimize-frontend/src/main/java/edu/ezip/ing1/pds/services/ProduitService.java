@@ -21,6 +21,7 @@ import org.slf4j.event.Level;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.UUID;
 
@@ -48,12 +49,55 @@ public class ProduitService {
     public void insertProduits() throws InterruptedException, IOException {
     final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
     Produit prod = new Produit();
+    Produits tabP1= selectProduits(1);
+    Produits tabP2= selectProduits(2);
+    Produits tabP3= selectProduits(3);
+    Produits tabP4= selectProduits(4);
 
     int idP;
+    
+
     while (true) {
         try {
-            idP = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'id du produit (non existant)"));
-            break;
+            idP = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'id du produit (non existant)", JOptionPane.OK_CANCEL_OPTION));
+            boolean idExiste = false;
+        for (Produit p : tabP1.getProduits()) {
+            if (p.getIdP() == idP) {
+                idExiste = true;
+                break;
+            }
+        }
+        if (!idExiste) {
+            for (Produit p : tabP2.getProduits()) {
+                if (p.getIdP() == idP) {
+                    idExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!idExiste) {
+            for (Produit p : tabP3.getProduits()) {
+                if (p.getIdP() == idP) {
+                    idExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!idExiste) {
+            for (Produit p : tabP4.getProduits()) {
+                if (p.getIdP() == idP) {
+                    idExiste = true;
+                    break;
+                }
+            }
+        }
+
+        if (idExiste) {
+            JOptionPane.showMessageDialog(null, "Erreur : Un produit avec cet ID existe déjà.");
+        } else {
+            break; 
+        }
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'id du produit.");
         }
@@ -62,8 +106,47 @@ public class ProduitService {
 
     String nom;
     while (true) {
-        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à insérer");
-        if (nom != null && !nom.trim().isEmpty()) {
+        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à insérer", JOptionPane.OK_CANCEL_OPTION);
+
+        boolean nomExiste = false;
+        for (Produit p : tabP1.getProduits()) {
+            if (p.getNom().equals(nom)) {
+                nomExiste = true;
+                break;
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP2.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP3.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP4.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+
+        if (nomExiste) {
+            JOptionPane.showMessageDialog(null, "Erreur : Un produit avec ce Nom existe déjà.");
+        } else {
+            break; 
+        }
+
+        if (nom != null && !nom.trim().isEmpty() && nomExiste == false) {
             break;
         }
         JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
@@ -73,7 +156,7 @@ public class ProduitService {
     int poids;
     while (true) {
         try {
-            poids = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer le poids du produit (par unité en g)"));
+            poids = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer le poids du produit (par unité en g)", JOptionPane.OK_CANCEL_OPTION));
             break;
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour le poids.");
@@ -84,7 +167,7 @@ public class ProduitService {
     int ig;
     while (true) {
         try {
-            ig = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'indice glycémique du produit"));
+            ig = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'indice glycémique du produit", JOptionPane.OK_CANCEL_OPTION));
             break;
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour l'indice glycémique.");
@@ -95,7 +178,7 @@ public class ProduitService {
     int EmpreinteC;
     while (true) {
         try {
-            EmpreinteC = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'Empreinte carbonne du produit "));
+            EmpreinteC = Integer.parseInt(JOptionPane.showInputDialog("Veuillez entrer l'Empreinte carbonne du produit ", JOptionPane.OK_CANCEL_OPTION));
             break;
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer un nombre valide pour le poids.");
@@ -118,7 +201,7 @@ prod.setBio(bio);
 
     String origine;
     while (true) {
-        origine = JOptionPane.showInputDialog("Veuillez entrer l'origine du produit");
+        origine = JOptionPane.showInputDialog("Veuillez entrer l'origine du produit", JOptionPane.OK_CANCEL_OPTION);
         if (origine != null && !origine.trim().isEmpty()) {
             break;
         }
@@ -193,11 +276,53 @@ prod.setBio(bio);
 public void deleteProduit() throws InterruptedException, IOException {
     final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
     Produit prod = new Produit();
-
+    Produits tabP1= selectProduits(1);
+    Produits tabP2= selectProduits(2);
+    Produits tabP3= selectProduits(3);
+    Produits tabP4= selectProduits(4);
     String nom;
     while (true) {
-        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à supprimer");
-        if (nom != null && !nom.trim().isEmpty()) {
+        nom = JOptionPane.showInputDialog("Veuillez entrer le nom du produit à supprimer", JOptionPane.OK_CANCEL_OPTION);
+
+        boolean nomExiste = false;
+        for (Produit p : tabP1.getProduits()) {
+            if (p.getNom().equals(nom)) {
+                nomExiste = true;
+                break;
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP2.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP3.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+        if (!nomExiste) {
+            for (Produit p : tabP4.getProduits()) {
+                if (p.getNom().equals(nom)) {
+                    nomExiste = true;
+                    break;
+                }
+            }
+        }
+
+        if (!nomExiste) {
+            JOptionPane.showMessageDialog(null, "Erreur : Un produit avec ce Nom n'existe pas.");
+        } else {
+            break; 
+        }
+
+        if (nom != null && !nom.trim().isEmpty() && nomExiste == true) {
             break;
         }
         JOptionPane.showMessageDialog(null, "Erreur : Le nom du produit ne peut pas être vide.");
