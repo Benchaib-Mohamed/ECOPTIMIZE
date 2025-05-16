@@ -14,6 +14,7 @@ public class FenetreUser extends JFrame implements ActionListener {
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
     JPanel reste = new JPanel();
+    JButton preced;
     public FenetreUser(){
 
         this.setTitle("Ecoptimize");
@@ -35,10 +36,11 @@ public class FenetreUser extends JFrame implements ActionListener {
         titre.add(message);
         boutonAlt.setPreferredSize(new Dimension(350,350));
         boutonStat.setPreferredSize(new Dimension(350,350));
-        
+        preced=new JButton("⬅️");
+        preced.addActionListener(this);
         reste.add(boutonAlt);
         reste.add(boutonStat);
-        
+        getContentPane().add(preced,BorderLayout.SOUTH);
         this.getContentPane().add(BorderLayout.CENTER, reste);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +55,10 @@ public class FenetreUser extends JFrame implements ActionListener {
                 if(e.getSource() == boutonStat){
                     new FenetreStat2();
                 }
-                
+                if(e.getSource().equals(preced)){
+                    this.dispose();
+                    new FenetrePrincipale2();
+                }
                 
             }catch(IOException ex){
                 ex.printStackTrace();

@@ -15,6 +15,7 @@ public class FenetreAdmin extends JFrame implements ActionListener {
     JLabel message= new JLabel("Bienvenue sur votre borne ECOPTIMIZE, votre chercheur d'alternatives saines !");
     JPanel titre= new JPanel();
     JPanel reste = new JPanel();
+    JButton preced;
     public FenetreAdmin(){
 
         this.setTitle("Ecoptimize");
@@ -37,10 +38,13 @@ public class FenetreAdmin extends JFrame implements ActionListener {
         
         boutonInser.setPreferredSize(new Dimension(350,350));
         boutonSuppr.setPreferredSize(new Dimension(350,350));
-        
+
+        preced=new JButton("⬅️");
+        preced.addActionListener(this);
         reste.add(boutonInser);
         reste.add(boutonSuppr);
         this.getContentPane().add(BorderLayout.CENTER, reste);
+        getContentPane().add(preced,BorderLayout.SOUTH);
         
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -54,6 +58,10 @@ public class FenetreAdmin extends JFrame implements ActionListener {
                 }
                 if(e.getSource() == boutonSuppr){
                     new FenetreSuppr();
+                }
+                if(e.getSource().equals(preced)){
+                    this.dispose();
+                    new FenetrePrincipale2();
                 }
                 
             }catch(IOException ex){
